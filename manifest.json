@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Hello World Overlay",
+  "version": "1.0",
+  "description": "A simple Firefox extension that displays a 'Hello World' overlay on web pages",
+
+  "content_scripts": [
+    {
+      "matches": ["https://wordleunlimited.org/"],
+      "js": ["content.js"],
+      "css": ["overlay.css"]
+    }
+  ],
+
+  "permissions": [
+    "activeTab"
+  ]
+}
