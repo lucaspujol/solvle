@@ -12,6 +12,11 @@
     }
   ],
 
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Hello World Extension"
+  },
+
   "permissions": [
     "activeTab"
   ]
