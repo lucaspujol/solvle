@@ -1,137 +1,7 @@
-let overlayVisible = true;
+// Main Content Script
+// Orchestrates the extension functionality
 
-function logAllTiles() {
-  // Access the game through shadow DOM
-  const gameApp = document.querySelector('game-app');
-  if (!gameApp || !gameApp.shadowRoot) {
-    console.log('Game not loaded yet');
-    return;
-  }
-
-  const shadowRoot = gameApp.shadowRoot;
-  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
-
-  console.log('=== CURRENT GAME STATE ===');
-  gameRows.forEach((row, rowIndex) => {
-    const word = row.getAttribute('letters');
-    if (word && row.shadowRoot) {
-      console.log(`Row ${rowIndex}: "${word.toUpperCase()}"`);
-
-      const tiles = row.shadowRoot.querySelectorAll('game-tile');
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
-        const stateIcon = evaluation === 'correct' ? '🟩' :
-                         evaluation === 'present' ? '🟨' :
-                         evaluation === 'absent' ? '⬜' : '⬛';
-        console.log(`  [${rowIndex},${colIndex}] ${letter?.toUpperCase()} ${stateIcon} ${evaluation || 'empty'}`);
-      });
-    }
-  });
-  console.log('========================');
-}
-
-function extractGreenConstraints() {
-  const gameApp = document.querySelector('game-app');
-  if (!gameApp || !gameApp.shadowRoot) {
-    console.log('Game not loaded yet');
-    return {};
-  }
-
-  const shadowRoot = gameApp.shadowRoot;
-  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
-  const greenConstraints = {};
-
-  gameRows.forEach((row, rowIndex) => {
-    const word = row.getAttribute('letters');
-    if (word && row.shadowRoot) {
-      const tiles = row.shadowRoot.querySelectorAll('game-tile');
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
-        if (evaluation === 'correct') {
-          greenConstraints[colIndex] = letter.toUpperCase();
-        }
-      });
-    }
-  });
-  return greenConstraints;
-}
-
-function matchesGreenConstraints(word, constraints) {
-  const uppercaseWord = word.toUpperCase();
-  for (const [position, letter] of Object.entries(constraints)) {
-    if (uppercaseWord[position] !== letter) {
-      return false;
-    }
-  }
-  return true;
-}
-
-let allWords = [];
-
-async function loadWordList() {
-  const response = await fetch('wordle-answers-alphabetical.txt')
-  const content = await response.text();
-  allWords = content.split('\n');
-}
-
-function getTileState(tile) {
-  const bgColor = window.getComputedStyle(tile).backgroundColor;
-  if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
-    return 'correct';
-  if (bgColor.includes('yellow') || bgColor.includes('181, 159, 56'))
-    return 'present';
-  return 'absent';
-}
-
-function createOverlay() {
-  if (document.getElementById('hello-world-overlay')) {
-    return;
-  }
-
-  const overlay = document.createElement('div');
-  overlay.id = 'hello-world-overlay';
-
-  const text = document.createElement('div');
-  text.textContent = 'Hello World!';
-
-  const button = document.createElement('button');
-  button.textContent = 'Log Message';
-  button.id = 'log-button';
-  button.addEventListener('click', function() {
-    console.log('Button clicked from Firefox extension!');
-    console.log('Current page:', window.location.href);
-  });
-
-  const testButton = document.createElement('button');
-  testButton.textContent = 'Test Tiles';
-  testButton.id = 'test-button';
-  testButton.addEventListener('click', function() {
-    console.log('BUTTON CLICKED!');
-    logAllTiles();
-
-    const constraints = extractGreenConstraints();
-    console.log('=== EXTRACTED GREEN CONSTRAINTS ===');
-    console.log(constraints);
-    console.log('===================================');
-  });
-
-  overlay.appendChild(text);
-  overlay.appendChild(button);
-  overlay.appendChild(testButton);
-  document.body.appendChild(overlay);
-}
-
-function toggleOverlay() {
-  const overlay = document.getElementById('hello-world-overlay');
-  if (overlay) {
-    overlayVisible = !overlayVisible;
-    overlay.style.display = overlayVisible ? 'flex' : 'none';
-  }
-}
-
-// Keyboard shortcut listener
+// Keyboard shortcut listeners
 document.addEventListener('keydown', function(event) {
   if (event.key === '?' && !event.ctrlKey && !event.altKey && !event.metaKey) {
     // Only trigger if not typing in an input field
@@ -159,6 +29,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// Initialize the extension
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', createOverlay);
 } else {
