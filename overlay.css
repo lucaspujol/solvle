@@ -1,30 +1,253 @@
+/* Solvle Extension Overlay Styles */
+/* Using official Wordle color palette */
+:root {
+  --wordle-yellow: #c8b653;
+  --wordle-green: #6ca965;
+  --wordle-gray: #787c7f;
+  --wordle-black: #000000;
+  --wordle-white: #ffffff;
+  --wordle-border: 2px;
+
+  /* Light theme variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #787c7f;
+  --border-color: #787c7f;
+  --tile-bg: #ffffff;
+  --tile-border: #000000;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --bg-primary: #121213;
+  --bg-secondary: #1a1a1b;
+  --text-primary: #ffffff;
+  --text-secondary: #818384;
+  --border-color: #3a3a3c;
+  --tile-bg: #121213;
+  --tile-border: #3a3a3c;
+
+  /* Dark mode specific button hover */
+  --button-hover-bg: #2a2a2c;
+  --button-hover-border: #4a4a4c;
+}
+
+/* Light theme button hover (default) */
+:root {
+  --button-hover-bg: #000000;
+  --button-hover-border: #000000;
+}
+
+/* Main overlay container */
 #hello-world-overlay {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: black;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
+  width: 350px;
+  background-color: var(--bg-primary);
+  border: var(--wordle-border) solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 10000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
+  gap: 15px;
+}
+
+/* Header */
+#hello-world-overlay > div:first-child {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: var(--wordle-border) solid var(--wordle-green);
+}
+
+/* Header tiles for "SOLVLE" */
+.header-tile {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-family: inherit;
+}
+
+.header-tile.green {
+  background-color: var(--wordle-green);
+  color: var(--wordle-white);
+}
+
+.header-tile.yellow {
+  background-color: var(--wordle-yellow);
+  color: var(--wordle-white);
+}
+
+.header-tile.gray {
+  background-color: var(--wordle-gray);
+  color: var(--wordle-white);
+}
+
+/* Button styles */
+.solvle-button {
+  background-color: var(--wordle-gray);
+  color: var(--wordle-white);
+  border: var(--wordle-border) solid var(--wordle-gray);
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.1s ease;
+  font-family: inherit;
+}
+
+.solvle-button:hover {
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+}
+
+.solvle-button:active {
+  background-color: var(--wordle-yellow);
+  border-color: var(--wordle-yellow);
+  transform: scale(0.98);
+}
+
+/* Word list container */
+#word-list {
+  min-height: 280px;
+  max-height: 320px;
+  overflow-y: auto;
+  background-color: var(--bg-secondary);
+  border: var(--wordle-border) solid var(--border-color);
+  border-radius: 4px;
+  padding: 15px;
+}
+
+#word-list:empty::before {
+  content: "No words found.";
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Navigation container */
+#navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
 }
 
-#log-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  background-color: #007cff;
-  color: white;
+/* Navigation buttons */
+#prev-button,
+#next-button {
+  background-color: var(--wordle-gray);
+  color: var(--wordle-white);
+  border: var(--wordle-border) solid var(--wordle-gray);
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.1s ease;
+  font-family: inherit;
 }
 
-#log-button:hover {
-  background-color: #0056cc;
+#prev-button:hover:not(:disabled),
+#next-button:hover:not(:disabled) {
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+}
+
+#prev-button:active:not(:disabled),
+#next-button:active:not(:disabled) {
+  background-color: var(--wordle-green);
+  border-color: var(--wordle-green);
+}
+
+#prev-button:disabled,
+#next-button:disabled {
+  background-color: var(--text-secondary);
+  border-color: var(--text-secondary);
+  color: var(--bg-primary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Page info */
+#page-info {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  min-width: 80px;
+}
+
+/* Word entries styling */
+#word-list .word-entry {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  justify-content: center;
+}
+
+#word-list .word-entry:last-child {
+  margin-bottom: 0;
+}
+
+/* Letter tiles */
+.letter-tile {
+  width: 40px;
+  height: 40px;
+  background-color: var(--tile-bg);
+  border: var(--wordle-border) solid var(--tile-border);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  font-family: inherit;
+}
+
+/* Scrollbar styling for webkit browsers */
+#word-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#word-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#word-list::-webkit-scrollbar-thumb {
+  background: var(--wordle-gray);
+  border-radius: 4px;
+}
+
+#word-list::-webkit-scrollbar-thumb:hover {
+  background: var(--wordle-black);
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+  #hello-world-overlay {
+    width: calc(100vw - 40px);
+    right: 20px;
+  }
 }
