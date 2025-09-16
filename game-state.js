@@ -32,7 +32,7 @@ function logAllTiles() {
   console.log('========================');
 }
 
-function extractGreenConstraints() {
+function extractConstraints() {
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
     console.log('Game not loaded yet');
@@ -42,32 +42,7 @@ function extractGreenConstraints() {
   const shadowRoot = gameApp.shadowRoot;
   const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
   const greenConstraints = {};
-
-  gameRows.forEach((row, rowIndex) => {
-    const word = row.getAttribute('letters');
-    if (word && row.shadowRoot) {
-      const tiles = row.shadowRoot.querySelectorAll('game-tile');
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
-        if (evaluation === 'correct') {
-          greenConstraints[colIndex] = letter.toUpperCase();
-        }
-      });
-    }
-  });
-  return greenConstraints;
-}
-
-function extractGrayConstraints() {
-    const gameApp = document.querySelector('game-app');
-  if (!gameApp || !gameApp.shadowRoot) {
-    console.log('Game not loaded yet');
-    return {};
-  }
-
-  const shadowRoot = gameApp.shadowRoot;
-  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
+  const yellowConstraints = {};
   const grayConstraints = [];
 
   gameRows.forEach((row, rowIndex) => {
@@ -77,20 +52,25 @@ function extractGrayConstraints() {
       tiles.forEach((tile, colIndex) => {
         const letter = tile.getAttribute('letter');
         const evaluation = tile.getAttribute('evaluation');
-        if (evaluation === 'absent') {
-          grayConstraints.push(letter.toUpperCase());
+
+        switch (evaluation) {
+          case 'correct':
+            greenConstraints[colIndex] = letter.toUpperCase();
+            break;
+          case 'present':
+            if (!yellowConstraints[letter.toUpperCase()]) {
+              yellowConstraints[letter.toUpperCase()] = [];
+            }
+            yellowConstraints[letter.toUpperCase()].push(colIndex);
+            break;          
+          case 'absent':
+            grayConstraints.push(letter.toUpperCase());
+            break;
+          default:
+            break;
         }
       });
     }
   });
-  return grayConstraints;
-}
-
-function getTileState(tile) {
-  const bgColor = window.getComputedStyle(tile).backgroundColor;
-  if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
-    return 'correct';
-  if (bgColor.includes('yellow') || bgColor.includes('181, 159, 56'))
-    return 'present';
-  return 'absent';
+  return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
