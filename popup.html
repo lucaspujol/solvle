@@ -4,68 +4,127 @@
   <meta charset="utf-8">
   <style>
     body {
-      width: 200px;
+      width: 220px;
       padding: 15px;
-      font-family: Arial, sans-serif;
+      font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
       margin: 0;
+      background-color: #ffffff;
+      color: #000000;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 15px;
-      font-weight: bold;
-      color: #333;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #1a1a1a;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #6ca965;
     }
 
-    .toggle-section {
+    .control-section {
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: 2px solid #787c7f;
+    }
+
+    .control-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #000000;
     }
 
-    .toggle-button {
-      background-color: #007cff;
-      color: white;
-      border: none;
-      padding: 8px 16px;
+    .control-button {
+      background-color: #787c7f;
+      color: #ffffff;
+      border: 2px solid #787c7f;
+      padding: 10px 16px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 700;
+      width: 100%;
+      transition: all 0.1s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .toggle-button:hover {
-      background-color: #0056cc;
+    .control-button:hover {
+      background-color: #000000;
+      border-color: #000000;
+    }
+
+    .control-button:active {
+      background-color: #c8b653;
+      border-color: #c8b653;
+      transform: scale(0.98);
+    }
+
+    .control-button.active-state {
+      background-color: #6ca965;
+      border-color: #6ca965;
+    }
+
+    .control-button.active-state:hover {
+      background-color: #5d9457;
+      border-color: #5d9457;
+    }
+
+    .control-button.active-state:active {
+      background-color: #c8b653;
+      border-color: #c8b653;
     }
 
     .shortcut-info {
       font-size: 12px;
-      color: #666;
+      color: #787c7f;
       text-align: center;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #eee;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 2px solid #787c7f;
+      font-weight: 500;
     }
 
     .status {
-      font-size: 12px;
-      color: #007cff;
-      font-weight: bold;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 2px;
+      background-color: #ffffff;
+      border: 1px solid #787c7f;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-width: 50px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="header">Hello World Extension</div>
+  <div class="header">Solvle Helper</div>
 
-  <div class="toggle-section">
-    <span>Widget:</span>
-    <span class="status" id="status">Loading...</span>
+  <div class="control-section">
+    <div class="control-row">
+      <span id="overlayLabel">Overlay</span>
+    </div>
+    <button class="control-button" id="showHideBtn">Show</button>
   </div>
 
-  <button class="toggle-button" id="toggleBtn">Toggle Widget</button>
+  <div class="control-section">
+    <div class="control-row">
+      <span id="autoplayLabel">Autoplay</span>
+    </div>
+    <button class="control-button" id="autoplayBtn">Turn On</button>
+  </div>
 
   <div class="shortcut-info">
-    Press <strong>?</strong> to toggle
+    Press <strong>?</strong> to toggle overlay<br>
+    Press <strong>.</strong> to log game state
   </div>
 
   <script src="popup.js"></script>
