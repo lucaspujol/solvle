@@ -1,6 +1,15 @@
 // Wordle Game State Management
 // Handles interaction with the Wordle game DOM and extracting game constraints
 
+// TODO(human): Implement detectWordleVariant function
+// Should return 'wordleunlimited' or 'nytimes' based on window.location.hostname
+// Use this to determine which DOM extraction logic to use
+
+function detectWordleVariant() {
+  // TODO(human): Add detection logic here
+  // Return 'wordleunlimited' or 'nytimes'
+}
+
 function logAllTiles() {
   // Access the game through shadow DOM
   const gameApp = document.querySelector('game-app');
@@ -33,6 +42,16 @@ function logAllTiles() {
 }
 
 function extractConstraints() {
+  const variant = detectWordleVariant();
+
+  if (variant === 'nytimes') {
+    return extractNYTimesConstraints();
+  } else {
+    return extractWordleUnlimitedConstraints();
+  }
+}
+
+function extractWordleUnlimitedConstraints() {
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
     console.log('Game not loaded yet');
@@ -73,6 +92,15 @@ function extractConstraints() {
     }
   });
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
+}
+
+// TODO(human): Implement extractNYTimesConstraints function
+// Should return the same structure: { green: {}, yellow: {}, gray: [] }
+// Will need different DOM selectors for NY Times Wordle
+function extractNYTimesConstraints() {
+  // TODO(human): Add NY Times specific DOM extraction logic
+  // For now, return empty constraints
+  return { green: {}, yellow: {}, gray: [] };
 }
 
 function startAutoplay() {
