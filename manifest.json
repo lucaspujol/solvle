@@ -6,7 +6,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://wordleunlimited.org/"],
+      "matches": ["https://wordleunlimited.org/", "https://www.nytimes.com/games/wordle/index.html"],
       "js": ["wordle-answers-alphabetical.js", "game-state.js", "solver.js", "ui.js", "content.js"],
       "css": ["overlay.css"]
     }

@@ -42,7 +42,7 @@
 /* Main overlay container */
 #hello-world-overlay {
   position: fixed;
-  top: 20px;
+  top: 70px;
   right: 20px;
   width: 350px;
   background-color: var(--bg-primary);
