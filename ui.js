@@ -6,7 +6,7 @@ let overlayVisible = true;
 // Pagination state
 let currentWords = [];
 let currentPage = 0;
-const wordsPerPage = 10;
+const wordsPerPage = 5;
 
 function displayWords(words, page) {
   const startIndex = page * wordsPerPage;
@@ -14,9 +14,16 @@ function displayWords(words, page) {
   const pagesWords = words.slice(startIndex, endIndex);
   const wordListDiv = document.getElementById('word-list');
   if (pagesWords.length > 0) {
-    wordListDiv.innerHTML = pagesWords.join('<br>');
+    wordListDiv.innerHTML = pagesWords
+      .map(word => {
+        const letters = word.toUpperCase().split('').map(letter =>
+          `<div class="letter-tile">${letter}</div>`
+        ).join('');
+        return `<div class="word-entry">${letters}</div>`;
+      })
+      .join('');
   } else {
-    wordListDiv.innerHTML = 'No words found.';
+    wordListDiv.innerHTML = '';
   }
 }
 
@@ -61,11 +68,24 @@ function createOverlay() {
   overlay.id = 'hello-world-overlay';
 
   const text = document.createElement('div');
-  text.textContent = 'Solvle!';
+  // Create colored header tiles for "SOLVLE"
+  const headerLetters = [
+    { letter: 'S', color: 'green' },
+    { letter: 'O', color: 'yellow' },
+    { letter: 'L', color: 'gray' },
+    { letter: 'V', color: 'green' },
+    { letter: 'L', color: 'yellow' },
+    { letter: 'E', color: 'green' }
+  ];
+
+  text.innerHTML = headerLetters
+    .map(({ letter, color }) => `<div class="header-tile ${color}">${letter}</div>`)
+    .join('');
 
   const logTilesButton = document.createElement('button');
   logTilesButton.textContent = 'Log all tiles'
   logTilesButton.id = 'log-tiles-button';
+  logTilesButton.className = 'solvle-button';
   logTilesButton.addEventListener('click', function() {
     logAllTiles();
   });
@@ -74,6 +94,7 @@ function createOverlay() {
   const suggestButton = document.createElement('button');
   suggestButton.textContent = 'Find Words';
   suggestButton.id = 'suggest-button';
+  suggestButton.className = 'solvle-button';
   suggestButton.addEventListener('click', function() {
     filterAndDisplay();
   });
@@ -81,12 +102,10 @@ function createOverlay() {
   // Word list display area
   const wordListDiv = document.createElement('div');
   wordListDiv.id = 'word-list';
-  wordListDiv.style.cssText = 'margin: 10px 0; min-height: 200px; border: 1px solid #ccc; padding: 10px;';
 
   // Navigation controls
   const navDiv = document.createElement('div');
   navDiv.id = 'navigation';
-  navDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-top: 10px;';
 
   const prevButton = document.createElement('button');
   prevButton.textContent = '< Prev';
