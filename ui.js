@@ -54,6 +54,13 @@ function createOverlay() {
   const text = document.createElement('div');
   text.textContent = 'Solvle!';
 
+  const logTilesButton = document.createElement('button');
+  logTilesButton.textContent = 'Log all tiles'
+  logTilesButton.id = 'log-tiles-button';
+  logTilesButton.addEventListener('click', function() {
+    logAllTiles();
+  });
+
   // Word suggestion button
   const suggestButton = document.createElement('button');
   suggestButton.textContent = 'Find Words';
@@ -105,6 +112,7 @@ function createOverlay() {
 
   overlay.appendChild(text);
   overlay.appendChild(suggestButton);
+  overlay.appendChild(logTilesButton);
   overlay.appendChild(wordListDiv);
   overlay.appendChild(navDiv);
   document.body.appendChild(overlay);
