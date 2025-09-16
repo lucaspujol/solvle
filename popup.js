@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
   const showHideBtn = document.getElementById('showHideBtn');
   const autoplayBtn = document.getElementById('autoplayBtn');
+  const themeBtn = document.getElementById('themeBtn');
   const overlayLabel = document.getElementById('overlayLabel');
   const autoplayLabel = document.getElementById('autoplayLabel');
+  const themeLabel = document.getElementById('themeLabel');
 
   // Get current state when popup opens
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response) {
         updateOverlayButton(response.visible);
         updateAutoplayButton(response.autoplay);
+        updateThemeButton(response.theme);
       }
     });
   });
@@ -36,6 +39,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  themeBtn.addEventListener('click', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleTheme' }, function(response) {
+        if (response) {
+          updateThemeButton(response.theme);
+        }
+      });
+    });
+  });
+
   function updateOverlayButton(visible) {
     if (visible) {
       overlayLabel.textContent = 'Overlay';
@@ -57,6 +70,18 @@ document.addEventListener('DOMContentLoaded', function() {
       autoplayLabel.textContent = 'Autoplay';
       autoplayBtn.textContent = 'Autoplay Off';
       autoplayBtn.classList.remove('active-state');
+    }
+  }
+
+  function updateThemeButton(theme) {
+    if (theme === 'dark') {
+      themeLabel.textContent = 'Color Theme';
+      themeBtn.textContent = 'Dark Theme';
+      themeBtn.classList.add('active-state');
+    } else {
+      themeLabel.textContent = 'Color Theme';
+      themeBtn.textContent = 'Light Theme';
+      themeBtn.classList.remove('active-state');
     }
   }
 });
