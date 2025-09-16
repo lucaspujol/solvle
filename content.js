@@ -68,6 +68,14 @@ function matchesGreenConstraints(word, constraints) {
   return true;
 }
 
+let allWords = [];
+
+async function loadWordList() {
+  const response = await fetch('wordle-answers-alphabetical.txt')
+  const content = await response.text();
+  allWords = content.split('\n');
+}
+
 function getTileState(tile) {
   const bgColor = window.getComputedStyle(tile).backgroundColor;
   if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
