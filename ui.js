@@ -33,7 +33,8 @@ function updatePagination() {
 }
 
 function filterAndDisplay() {
-  const constraints = extractConstraints();
+  const rawConstraints = extractConstraints();
+  const constraints = cleanConstraints(rawConstraints);
   currentWords = filterWords(constraints.green, constraints.yellow, constraints.gray);
   console.log('Green constraints:', constraints.green);
   console.log('Yellow constraints:', constraints.yellow);

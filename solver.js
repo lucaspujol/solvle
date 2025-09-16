@@ -1,9 +1,19 @@
 // Wordle Solver Logic
 // Handles word filtering, constraint matching, and suggestion algorithms
 
-// Global word list reference (allWords is loaded from wordle-answers-alphabetical.js)
+function cleanConstraints(constraints) {
+  const greenLetters = new Set(Object.values(constraints.green));
 
-// loadWordList() removed - allWords is already available globally
+  // Remove grays that are green elsewhere
+  constraints.gray = constraints.gray.filter(letter => !greenLetters.has(letter));
+
+  // Remove yellows that are green elsewhere
+  for (const greenLetter of greenLetters) {
+    delete constraints.yellow[greenLetter];
+  }
+
+  return constraints;
+}
 
 function matchesGreenConstraints(word, constraints) {
   const uppercaseWord = word.toUpperCase();
