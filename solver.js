@@ -22,7 +22,12 @@ function matchesYellowConstraints(word, constraints) {
 }
 
 function matchesGrayConstraints(word, constraints) {
-  // TODO: Implement gray (absent) letter constraints
+  const uppercaseWord = word.toUpperCase();
+  for (const letter of constraints) {
+    if (uppercaseWord.includes(letter)) {
+      return false;
+    }  
+  }
   return true;
 }
 
