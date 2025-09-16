@@ -19,13 +19,19 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+// Autoplay state
+let autoplayActive = true;
+
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'toggle') {
     toggleOverlay();
     sendResponse({ visible: overlayVisible });
   } else if (message.action === 'getState') {
-    sendResponse({ visible: overlayVisible });
+    sendResponse({ visible: overlayVisible, autoplay: autoplayActive });
+  } else if (message.action === 'toggleAutoplay') {
+    autoplayActive = !autoplayActive;
+    sendResponse({ autoplay: autoplayActive });
   }
 });
 
