@@ -31,6 +31,33 @@ function logAllTiles() {
   console.log('========================');
 }
 
+function extractGreenConstraints() {
+  const gameApp = document.querySelector('game-app');
+  if (!gameApp || !gameApp.shadowRoot) {
+    console.log('Game not loaded yet');
+    return {};
+  }
+
+  const shadowRoot = gameApp.shadowRoot;
+  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
+  const greenConstraints = {};
+
+  gameRows.forEach((row, rowIndex) => {
+    const word = row.getAttribute('letters');
+    if (word && row.shadowRoot) {
+      const tiles = row.shadowRoot.querySelectorAll('game-tile');
+      tiles.forEach((tile, colIndex) => {
+        const letter = tile.getAttribute('letter');
+        const evaluation = tile.getAttribute('evaluation');
+        if (evaluation === 'correct') {
+          greenConstraints[colIndex] = letter.toUpperCase();
+        }
+      });
+    }
+  });
+  return greenConstraints;
+}
+
 function getTileState(tile) {
   const bgColor = window.getComputedStyle(tile).backgroundColor;
   if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
@@ -65,6 +92,11 @@ function createOverlay() {
   testButton.addEventListener('click', function() {
     console.log('BUTTON CLICKED!');
     logAllTiles();
+
+    const constraints = extractGreenConstraints();
+    console.log('=== EXTRACTED GREEN CONSTRAINTS ===');
+    console.log(constraints);
+    console.log('===================================');
   });
 
   overlay.appendChild(text);
