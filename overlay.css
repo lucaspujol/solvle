@@ -29,14 +29,14 @@
   --tile-border: #3a3a3c;
 
   /* Dark mode specific button hover */
-  --button-hover-bg: #2a2a2c;
+  --button-hover-bg: #2a2a2c8e;
   --button-hover-border: #4a4a4c;
 }
 
 /* Light theme button hover (default) */
 :root {
-  --button-hover-bg: #000000;
-  --button-hover-border: #000000;
+  --button-hover-bg: #a5a5a5;
+  --button-hover-border: #a5a5a5;
 }
 
 /* Main overlay container */
@@ -126,13 +126,13 @@
 
 /* Word list container */
 #word-list {
-  min-height: 280px;
-  max-height: 320px;
+  min-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
   background-color: var(--bg-secondary);
   border: var(--wordle-border) solid var(--border-color);
   border-radius: 4px;
-  padding: 15px;
+  padding: 20px 15px;
 }
 
 #word-list:empty::before {
@@ -198,14 +198,19 @@
 
 /* Word entries styling */
 #word-list .word-entry {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 8px;
-  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 8px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border-color);
+  letter-spacing: 2px;
 }
 
 #word-list .word-entry:last-child {
   margin-bottom: 0;
+  border-bottom: none;
 }
 
 /* Letter tiles */
