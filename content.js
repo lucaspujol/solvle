@@ -31,7 +31,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // Initialize the extension
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', createOverlay);
+  document.addEventListener('DOMContentLoaded', () => {
+    createOverlay();
+    startAutoplay();
+  });
 } else {
   createOverlay();
+  startAutoplay();
 }
