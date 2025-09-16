@@ -15,12 +15,7 @@ function displayWords(words, page) {
   const wordListDiv = document.getElementById('word-list');
   if (pagesWords.length > 0) {
     wordListDiv.innerHTML = pagesWords
-      .map(word => {
-        const letters = word.toUpperCase().split('').map(letter =>
-          `<div class="letter-tile">${letter}</div>`
-        ).join('');
-        return `<div class="word-entry">${letters}</div>`;
-      })
+      .map(word => `<div class="word-entry">${word.toUpperCase()}</div>`)
       .join('');
   } else {
     wordListDiv.innerHTML = '';
