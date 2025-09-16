@@ -58,6 +58,16 @@ function extractGreenConstraints() {
   return greenConstraints;
 }
 
+function matchesGreenConstraints(word, constraints) {
+  const uppercaseWord = word.toUpperCase();
+  for (const [position, letter] of Object.entries(constraints)) {
+    if (uppercaseWord[position] !== letter) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function getTileState(tile) {
   const bgColor = window.getComputedStyle(tile).backgroundColor;
   if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
