@@ -206,6 +206,7 @@
   margin-bottom: 4px;
   border-bottom: 1px solid var(--border-color);
   letter-spacing: 2px;
+  position: relative;
 }
 
 #word-list .word-entry:last-child {
