@@ -74,3 +74,81 @@ function extractConstraints() {
   });
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
+
+function startAutoplay() {
+  const gameApp = document.querySelector('game-app');
+  let previousCompletedRows = 0;
+  let tileObservers = [];
+
+  function checkForNewCompletedRows() {
+    const gameRows = gameApp.shadowRoot.querySelectorAll('game-row[letters]');
+    let completedRows = 0;
+
+    gameRows.forEach(row => {
+      if (row.shadowRoot) {
+        const tiles = row.shadowRoot.querySelectorAll('game-tile');
+        let evaluatedTiles = 0;
+
+        tiles.forEach(tile => {
+          if (tile.getAttribute('evaluation')) {
+            evaluatedTiles++;
+          }
+        });
+
+        if (evaluatedTiles === 5) {
+          completedRows++;
+        }
+      }
+    });
+
+    if (completedRows > previousCompletedRows) {
+      console.log(`Row ${completedRows} completed! Updating constraints...`);
+      previousCompletedRows = completedRows;
+
+      setTimeout(() => {
+        filterAndDisplay();
+      }, 300);
+    }
+  }
+
+  function setupTileObservers() {
+    // Clear existing observers
+    tileObservers.forEach(obs => obs.disconnect());
+    tileObservers = [];
+
+    const gameRows = gameApp.shadowRoot.querySelectorAll('game-row');
+
+    gameRows.forEach(row => {
+      if (row.shadowRoot) {
+        const tiles = row.shadowRoot.querySelectorAll('game-tile');
+
+        tiles.forEach(tile => {
+          const tileObserver = new MutationObserver(() => {
+            checkForNewCompletedRows();
+          });
+
+          tileObserver.observe(tile, {
+            attributes: true,
+            attributeFilter: ['evaluation']
+          });
+
+          tileObservers.push(tileObserver);
+        });
+      }
+    });
+  }
+
+  setupTileObservers();
+
+  // Also watch for new rows being added (in case game structure changes)
+  const structureObserver = new MutationObserver(() => {
+    setupTileObservers(); // Re-setup observers when structure changes
+  });
+
+  structureObserver.observe(gameApp.shadowRoot, {
+    childList: true,
+    subtree: true
+  });
+
+  console.log('Tile observers started - now play a word!');
+}
