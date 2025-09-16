@@ -33,13 +33,16 @@ function updatePagination() {
 }
 
 function filterAndDisplay() {
-  const greenConstraints = extractGreenConstraints();
-  const grayConstraints = extractGrayConstraints();
-  currentWords = filterWords(greenConstraints, {}, grayConstraints);
-  console.log('Word list loaded:', allWords);
-  console.log('Green constraints:', greenConstraints);
-  console.log('Gray constraints:', grayConstraints);
+  const constraints = extractConstraints();
+  currentWords = filterWords(constraints.green, constraints.yellow, constraints.gray);
+  console.log('Green constraints:', constraints.green);
+  console.log('Yellow constraints:', constraints.yellow);
+  console.log('Gray constraints:', constraints.gray);
   console.log('Filtered words:', currentWords.length);
+  if (currentWords.length > 0) {
+    const firstTenWords = currentWords.slice(0, 10);
+    console.log('First 10 filtered words:', firstTenWords);
+  }
   currentPage = 0;
   displayWords(currentWords, currentPage);
   updatePagination();
