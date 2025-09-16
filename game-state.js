@@ -59,6 +59,33 @@ function extractGreenConstraints() {
   return greenConstraints;
 }
 
+function extractGrayConstraints() {
+    const gameApp = document.querySelector('game-app');
+  if (!gameApp || !gameApp.shadowRoot) {
+    console.log('Game not loaded yet');
+    return {};
+  }
+
+  const shadowRoot = gameApp.shadowRoot;
+  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
+  const grayConstraints = [];
+
+  gameRows.forEach((row, rowIndex) => {
+    const word = row.getAttribute('letters');
+    if (word && row.shadowRoot) {
+      const tiles = row.shadowRoot.querySelectorAll('game-tile');
+      tiles.forEach((tile, colIndex) => {
+        const letter = tile.getAttribute('letter');
+        const evaluation = tile.getAttribute('evaluation');
+        if (evaluation === 'absent') {
+          grayConstraints.push(letter.toUpperCase());
+        }
+      });
+    }
+  });
+  return grayConstraints;
+}
+
 function getTileState(tile) {
   const bgColor = window.getComputedStyle(tile).backgroundColor;
   if (bgColor.includes('green') || bgColor.includes('83, 141, 78'))
