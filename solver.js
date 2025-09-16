@@ -15,9 +15,18 @@ function matchesGreenConstraints(word, constraints) {
   return true;
 }
 
-// Future: Add functions for yellow/gray constraints
 function matchesYellowConstraints(word, constraints) {
-  // TODO: Implement yellow letter constraints
+  const uppercaseWord = word.toUpperCase();
+  for (const [letter, positions] of Object.entries(constraints)) {
+    if (!uppercaseWord.includes(letter)) {
+      return false;
+    }
+    for (const pos of positions) {
+      if (uppercaseWord[pos] === letter) {
+        return false;
+      }
+    }
+  }
   return true;
 }
 
