@@ -40,6 +40,9 @@ function filterAndDisplay() {
   console.log('Yellow constraints:', constraints.yellow);
   console.log('Gray constraints:', constraints.gray);
   console.log('Filtered words:', currentWords.length);
+
+  // TODO: fliter words by frequency
+  // sortWords(constaints.green, constraints.yellow, currentWords)
   if (currentWords.length > 0) {
     const firstTenWords = currentWords.slice(0, 10);
     console.log('First 10 filtered words:', firstTenWords);
