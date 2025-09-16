@@ -3,11 +3,7 @@
 
 // Global word list reference (allWords is loaded from wordle-answers-alphabetical.js)
 
-function loadWordList() {
-  // Words are already loaded from the external JS file as const allWords
-  // No need to reassign, just log for debugging
-  console.log('Words loaded:', allWords.length);
-}
+// loadWordList() removed - allWords is already available globally
 
 function matchesGreenConstraints(word, constraints) {
   const uppercaseWord = word.toUpperCase();

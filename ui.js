@@ -33,7 +33,6 @@ function updatePagination() {
 }
 
 function filterAndDisplay() {
-  loadWordList();
   const greenConstraints = extractGreenConstraints();
   currentWords = allWords.filter(word => matchesGreenConstraints(word, greenConstraints));
   console.log('Word list loaded:', allWords);
