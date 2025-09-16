@@ -105,9 +105,12 @@ function startAutoplay() {
       console.log(`Row ${completedRows} completed! Updating constraints...`);
       previousCompletedRows = completedRows;
 
-      setTimeout(() => {
-        filterAndDisplay();
-      }, 300);
+      // Only auto-update if autoplay is active
+      if (typeof autoplayActive === 'undefined' || autoplayActive) {
+        setTimeout(() => {
+          filterAndDisplay();
+        }, 300);
+      }
     }
   }
 
