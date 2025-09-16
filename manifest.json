@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Hello World Overlay",
+  "name": "Solvle - Wordle Helper",
   "version": "1.0",
-  "description": "A simple Firefox extension that displays a 'Hello World' overlay on web pages",
+  "description": "A Firefox extension that helps solve Wordle puzzles by suggesting optimal word choices",
 
   "content_scripts": [
     {
@@ -14,7 +14,7 @@
 
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Hello World Extension"
+    "default_title": "Solvle Helper"
   },
 
   "permissions": [
