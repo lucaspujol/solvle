@@ -13,19 +13,19 @@ function detectWordleVariant() {
   }
 }
 
-function logAllTiles() {
-  const variant = detectWordleVariant();
+// function logAllTiles() {
+//   const variant = detectWordleVariant();
 
-  switch (variant) {
-    case 'nytimes':
-      return logAllTilesNY();
-    case 'wordleunlimited':
-      return logAllTilesWU();
-    default:
-      console.log('Unexpected error: unknown Wordle variant');
-      return;
-  }
-}
+//   switch (variant) {
+//     case 'nytimes':
+//       return logAllTilesNY();
+//     case 'wordleunlimited':
+//       return logAllTilesWU();
+//     default:
+//       console.error('Unexpected error: unknown Wordle variant');
+//       return;
+//   }
+// }
 
 function extractConstraintsNY() {
   const greenConstraints = {};
@@ -69,71 +69,69 @@ function extractConstraintsNY() {
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
 
-function logAllTilesNY() {
-  const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+// function logAllTilesNY() {
+//   const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
 
-  console.log('=== NY TIMES WORDLE STATE ===');
-  gameRows.forEach((row, rowIndex) => {
-    const tiles = row.querySelectorAll('[data-testid="tile"]');
-    const rowLetters = [];
-    let hasEvaluatedTiles = false;
+//   console.log('=== NY TIMES WORDLE STATE ===');
+//   gameRows.forEach((row, rowIndex) => {
+//     const tiles = row.querySelectorAll('[data-testid="tile"]');
+//     const rowLetters = [];
+//     let hasEvaluatedTiles = false;
 
-    tiles.forEach((tile, colIndex) => {
-      const state = tile.getAttribute('data-state');
-      const label = tile.getAttribute('aria-label');
-      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+//     tiles.forEach((tile, colIndex) => {
+//       const state = tile.getAttribute('data-state');
+//       const label = tile.getAttribute('aria-label');
+//       const letter = label?.match(/letter, ([A-Z])/)?.[1];
 
-      // Only process tiles with evaluated states (skip empty, tbd, etc.)
-      if (letter && (state === 'correct' || state === 'closed' || state === 'present' || state === 'absent')) {
-        hasEvaluatedTiles = true;
+//       if (letter && (state === 'correct' || state === 'closed' || state === 'present' || state === 'absent')) {
+//         hasEvaluatedTiles = true;
 
-        const stateIcon = state === 'correct' || state === 'closed' ? '🟩' :
-                         state === 'present' ? '🟨' :
-                         state === 'absent' ? '⬜' : '⬛';
+//         const stateIcon = state === 'correct' || state === 'closed' ? '🟩' :
+//                          state === 'present' ? '🟨' :
+//                          state === 'absent' ? '⬜' : '⬛';
 
-        rowLetters.push(`${letter}${stateIcon}`);
-        console.log(`  [${rowIndex},${colIndex}] ${letter} ${stateIcon} ${state}`);
-      }
-    });
+//         rowLetters.push(`${letter}${stateIcon}`);
+//         console.log(`  [${rowIndex},${colIndex}] ${letter} ${stateIcon} ${state}`);
+//       }
+//     });
 
-    // Only show row summary if it has evaluated tiles
-    if (hasEvaluatedTiles && rowLetters.length > 0) {
-      console.log(`Row ${rowIndex}: ${rowLetters.join(' ')}`);
-    }
-  });
-  console.log('========================');
-}
+//     if (hasEvaluatedTiles && rowLetters.length > 0) {
+//       console.log(`Row ${rowIndex}: ${rowLetters.join(' ')}`);
+//     }
+//   });
+//   console.log('========================');
+// }
 
-function logAllTilesWU() {
-  // Access the game through shadow DOM
-  const gameApp = document.querySelector('game-app');
-  if (!gameApp || !gameApp.shadowRoot) {
-    console.log('Game not loaded yet');
-    return;
-  }
+// function logAllTilesWU() {
+//   // Access the game through shadow DOM
+//   const gameApp = document.querySelector('game-app');
+//   if (!gameApp || !gameApp.shadowRoot) {
+//     console.log('Game not loaded yet');
+//     return;
+//   }
 
-  const shadowRoot = gameApp.shadowRoot;
-  const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
+//   const shadowRoot = gameApp.shadowRoot;
+//   const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
 
-  console.log('=== CURRENT GAME STATE ===');
-  gameRows.forEach((row, rowIndex) => {
-    const word = row.getAttribute('letters');
-    if (word && row.shadowRoot) {
-      console.log(`Row ${rowIndex}: "${word.toUpperCase()}"`);
+//   console.log('=== CURRENT GAME STATE ===');
+//   gameRows.forEach((row, rowIndex) => {
+//     const word = row.getAttribute('letters');
+//     if (word && row.shadowRoot) {
+//       console.log(`Row ${rowIndex}: "${word.toUpperCase()}"`);
 
-      const tiles = row.shadowRoot.querySelectorAll('game-tile');
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
-        const stateIcon = evaluation === 'correct' ? '🟩' :
-                         evaluation === 'present' ? '🟨' :
-                         evaluation === 'absent' ? '⬜' : '⬛';
-        console.log(`  [${rowIndex},${colIndex}] ${letter?.toUpperCase()} ${stateIcon} ${evaluation || 'empty'}`);
-      });
-    }
-  });
-  console.log('========================');
-}
+//       const tiles = row.shadowRoot.querySelectorAll('game-tile');
+//       tiles.forEach((tile, colIndex) => {
+//         const letter = tile.getAttribute('letter');
+//         const evaluation = tile.getAttribute('evaluation');
+//         const stateIcon = evaluation === 'correct' ? '🟩' :
+//                          evaluation === 'present' ? '🟨' :
+//                          evaluation === 'absent' ? '⬜' : '⬛';
+//         console.log(`  [${rowIndex},${colIndex}] ${letter?.toUpperCase()} ${stateIcon} ${evaluation || 'empty'}`);
+//       });
+//     }
+//   });
+//   console.log('========================');
+// }
 
 function extractConstraints() {
   const variant = detectWordleVariant();
@@ -151,7 +149,7 @@ function extractConstraints() {
 function extractConstraintsWU() {
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
-    console.log('Game not loaded yet');
+    console.error('Game not loaded yet');
     return {};
   }
 
@@ -200,7 +198,7 @@ function startAutoplay() {
     case 'wordleunlimited':
       return startAutoplayWU();
     default:
-      console.log('Autoplay not supported for this Wordle variant');
+      console.error('Autoplay not supported for this Wordle variant');
       return;
   }
 }

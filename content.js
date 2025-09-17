@@ -10,13 +10,6 @@ document.addEventListener('keydown', function(event) {
       toggleOverlay();
     }
   }
-  if (event.key === '.' && !event.ctrlKey && !event.altKey && !event.metaKey) {
-    // Only trigger if not typing in an input field
-    if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA' && !event.target.isContentEditable) {
-      event.preventDefault();
-      logAllTiles();
-    }
-  }
 });
 
 // Autoplay state
