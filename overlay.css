@@ -1,3 +1,8 @@
+/* Light theme button hover (default) */
+:root {
+  --button-hover-bg: #a5a5a5;
+  --button-hover-border: #a5a5a5;
+}
 /* Solvle Extension Overlay Styles */
 /* Using official Wordle color palette */
 :root {
@@ -29,15 +34,10 @@
   --tile-border: #3a3a3c;
 
   /* Dark mode specific button hover */
-  --button-hover-bg: #2a2a2c8e;
+  --button-hover-bg: #2a2a2cea;
   --button-hover-border: #4a4a4c;
 }
 
-/* Light theme button hover (default) */
-:root {
-  --button-hover-bg: #a5a5a5;
-  --button-hover-border: #a5a5a5;
-}
 
 /* Main overlay container */
 #hello-world-overlay {
@@ -45,6 +45,8 @@
   top: 70px;
   right: 20px;
   width: 350px;
+  min-width: 280px;
+  min-height: 200px;
   background-color: var(--bg-primary);
   border: var(--wordle-border) solid var(--border-color);
   border-radius: 8px;
@@ -56,6 +58,70 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+/* Draggable header */
+.solvle-header {
+  margin: -20px -20px 15px -20px;
+  padding: 15px 20px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 8px 8px 0 0;
+  cursor: move;
+  user-select: none;
+}
+
+.solvle-header:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Resize handles */
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--wordle-gray);
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.resize-handle:hover {
+  opacity: 1;
+  background-color: var(--wordle-green);
+}
+
+/* Position resize handles at corners */
+.resize-nw {
+  top: -5px;
+  left: -5px;
+  cursor: nw-resize;
+}
+
+.resize-ne {
+  top: -5px;
+  right: -5px;
+  cursor: ne-resize;
+}
+
+.resize-sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: sw-resize;
+}
+
+.resize-se {
+  bottom: -5px;
+  right: -5px;
+  cursor: se-resize;
 }
 
 /* Header */

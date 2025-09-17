@@ -98,7 +98,13 @@ function createOverlay() {
   const overlay = document.createElement('div');
   overlay.id = 'hello-world-overlay';
 
+  // Create draggable header
+  const header = document.createElement('div');
+  header.className = 'solvle-header';
+  header.id = 'solvle-header';
+
   const text = document.createElement('div');
+  text.className = 'header-content';
   // Create colored header tiles for "SOLVLE"
   const headerLetters = [
     { letter: 'S', color: 'green' },
@@ -112,6 +118,31 @@ function createOverlay() {
   text.innerHTML = headerLetters
     .map(({ letter, color }) => `<div class="header-tile ${color}">${letter}</div>`)
     .join('');
+
+  header.appendChild(text);
+
+  let isDragging = false;
+  let dragOffset = { x: 0, y: 0 };
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+
+    const rect = overlay.getBoundingClientRect();
+    dragOffset.x = e.clientX - rect.left;
+    dragOffset.y = e.clientY - rect.top;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    overlay.style.left = (e.clientX - dragOffset.x) + 'px';
+    overlay.style.top = (e.clientY - dragOffset.y) + 'px';
+    overlay.style.right = 'auto'
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  })
 
   // Word suggestion button
   const suggestButton = document.createElement('button');
@@ -178,12 +209,31 @@ function createOverlay() {
   navDiv.appendChild(pageInfo);
   navDiv.appendChild(nextButton);
 
-  overlay.appendChild(text);
+  overlay.appendChild(header);
+
   overlay.appendChild(suggestButton);
   overlay.appendChild(wordListDiv);
   overlay.appendChild(navDiv);
   overlay.appendChild(randomButton);
   overlay.appendChild(randomWordDiv);
+
+  // Add resize handles
+  const handleNW = document.createElement('div');
+  handleNW.className = 'resize-handle resize-nw';
+  overlay.appendChild(handleNW);
+
+  const handleNE = document.createElement('div');
+  handleNE.className = 'resize-handle resize-ne';
+  overlay.appendChild(handleNE);
+
+  const handleSW = document.createElement('div');
+  handleSW.className = 'resize-handle resize-sw';
+  overlay.appendChild(handleSW);
+
+  const handleSE = document.createElement('div');
+  handleSE.className = 'resize-handle resize-se';
+  overlay.appendChild(handleSE);
+
   document.body.appendChild(overlay);
 }
 
@@ -284,8 +334,6 @@ function highlightRandomWord(randomWord, clickable = true) {
   }
 }
 
-// TODO(human): Add the four helper functions here:
-// showWordCount(), hideWordCount(), getRandomStartWord(), getRandomFilteredWord()
 function showWordCount() {
   let wordCountDiv = document.getElementById('word-count');
   if (!wordCountDiv) {
