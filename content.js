@@ -15,11 +15,14 @@ document.addEventListener('keydown', function(event) {
 // Autoplay state
 let autoplayActive = true;
 
-// Theme state
-let currentTheme = 'light';
+// Theme state - load from localStorage
+let currentTheme = localStorage.getItem('solvle-theme') || 'light';
 
-// Mode state
-let currentMode = 'helper';
+// Apply saved theme immediately
+applyTheme(currentTheme);
+
+// Mode state - load from localStorage
+let currentMode = localStorage.getItem('solvle-mode') || 'helper';
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -34,10 +37,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === 'toggleTheme') {
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
     applyTheme(currentTheme);
+    // Save theme preference to localStorage
+    localStorage.setItem('solvle-theme', currentTheme);
     sendResponse({ theme: currentTheme });
   } else if (message.action === 'toggleMode') {
     currentMode = currentMode === 'helper' ? 'solver' : 'helper';
     updateUIForMode(currentMode);
+    // Save mode preference to localStorage
+    localStorage.setItem('solvle-mode', currentMode);
     sendResponse({ mode: currentMode });
   }
 });
