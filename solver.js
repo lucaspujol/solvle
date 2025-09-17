@@ -28,11 +28,20 @@ function matchesGreenConstraints(word, constraints) {
 function matchesYellowConstraints(word, constraints) {
   const uppercaseWord = word.toUpperCase();
   for (const [letter, positions] of Object.entries(constraints)) {
+    // Debug yellow constraint checking
+    if (word === 'ABOUT' || word === 'BOARD' || word === 'PROBE') {
+      console.log(`Checking yellow for "${word}": letter=${letter}, positions=${positions}`);
+      console.log(`  Word contains ${letter}:`, uppercaseWord.includes(letter));
+    }
+
     if (!uppercaseWord.includes(letter)) {
       return false;
     }
     for (const pos of positions) {
       if (uppercaseWord[pos] === letter) {
+        if (word === 'ABOUT' || word === 'BOARD' || word === 'PROBE') {
+          console.log(`  ${letter} found at forbidden position ${pos}`);
+        }
         return false;
       }
     }
@@ -51,11 +60,37 @@ function matchesGrayConstraints(word, constraints) {
 }
 
 function filterWords(greenConstraints, yellowConstraints = {}, grayConstraints = []) {
-  return allWords.filter(word => {
-    return matchesGreenConstraints(word, greenConstraints) &&
-           matchesYellowConstraints(word, yellowConstraints) &&
-           matchesGrayConstraints(word, grayConstraints);
+  console.log('=== WORD FILTERING DEBUG ===');
+  console.log('Input constraints:');
+  console.log('  Green:', greenConstraints);
+  console.log('  Yellow:', yellowConstraints);
+  console.log('  Gray:', grayConstraints);
+  console.log('Total words to filter:', allWords.length);
+
+  const filteredWords = allWords.filter(word => {
+    const greenMatch = matchesGreenConstraints(word, greenConstraints);
+    const yellowMatch = matchesYellowConstraints(word, yellowConstraints);
+    const grayMatch = matchesGrayConstraints(word, grayConstraints);
+
+    // Debug first few words that fail
+    if (!greenMatch || !yellowMatch || !grayMatch) {
+      if (allWords.indexOf(word) < 5) {
+        console.log(`Word "${word}" failed:`, {
+          green: greenMatch,
+          yellow: yellowMatch,
+          gray: grayMatch
+        });
+      }
+    }
+
+    return greenMatch && yellowMatch && grayMatch;
   });
+
+  console.log('Filtered words count:', filteredWords.length);
+  console.log('First 10 filtered words:', filteredWords.slice(0, 10));
+  console.log('===========================');
+
+  return filteredWords;
 }
 
 // Future: Add word scoring/ranking

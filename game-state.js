@@ -37,6 +37,27 @@ function extractConstraintsNY() {
   gameRows.forEach((row, rowIndex) => {
     const tiles = row.querySelectorAll('[data-testid="tile"]');
 
+    // First pass: collect all green and yellow letters from this row
+    const rowGreenLetters = new Set();
+    const rowYellowLetters = new Set();
+
+    tiles.forEach((tile, colIndex) => {
+      const state = tile.getAttribute('data-state');
+      const label = tile.getAttribute('aria-label');
+      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+
+      if (!letter) {
+        return;
+      }
+
+      if (state === 'correct' || state === 'closed') {
+        rowGreenLetters.add(letter);
+      } else if (state === 'present') {
+        rowYellowLetters.add(letter);
+      }
+    });
+
+    // Second pass: apply constraints, avoiding gray conflicts
     tiles.forEach((tile, colIndex) => {
       const state = tile.getAttribute('data-state');
       const label = tile.getAttribute('aria-label');
@@ -57,8 +78,11 @@ function extractConstraintsNY() {
           yellowConstraints[letter].push(colIndex);
           break;
         case 'absent':
-          if (!grayConstraints.includes(letter)) {
-            grayConstraints.push(letter);
+          // Only add to gray if this letter is NOT green or yellow anywhere in this row
+          if (!rowGreenLetters.has(letter) && !rowYellowLetters.has(letter)) {
+            if (!grayConstraints.includes(letter)) {
+              grayConstraints.push(letter);
+            }
           }
           break;
         default:
@@ -66,6 +90,14 @@ function extractConstraintsNY() {
       }
     });
   });
+
+  // Debug logging
+  console.log('=== NY TIMES CONSTRAINT EXTRACTION DEBUG ===');
+  console.log('Green constraints:', greenConstraints);
+  console.log('Yellow constraints:', yellowConstraints);
+  console.log('Gray constraints:', grayConstraints);
+  console.log('==========================================');
+
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
 
@@ -163,6 +195,23 @@ function extractConstraintsWU() {
     const word = row.getAttribute('letters');
     if (word && row.shadowRoot) {
       const tiles = row.shadowRoot.querySelectorAll('game-tile');
+
+      // First pass: collect all green and yellow letters from this row
+      const rowGreenLetters = new Set();
+      const rowYellowLetters = new Set();
+
+      tiles.forEach((tile, colIndex) => {
+        const letter = tile.getAttribute('letter');
+        const evaluation = tile.getAttribute('evaluation');
+
+        if (evaluation === 'correct') {
+          rowGreenLetters.add(letter.toUpperCase());
+        } else if (evaluation === 'present') {
+          rowYellowLetters.add(letter.toUpperCase());
+        }
+      });
+
+      // Second pass: apply constraints, avoiding gray conflicts
       tiles.forEach((tile, colIndex) => {
         const letter = tile.getAttribute('letter');
         const evaluation = tile.getAttribute('evaluation');
@@ -176,9 +225,15 @@ function extractConstraintsWU() {
               yellowConstraints[letter.toUpperCase()] = [];
             }
             yellowConstraints[letter.toUpperCase()].push(colIndex);
-            break;          
+            break;
           case 'absent':
-            grayConstraints.push(letter.toUpperCase());
+            // Only add to gray if this letter is NOT green or yellow anywhere in this row
+            const upperLetter = letter.toUpperCase();
+            if (!rowGreenLetters.has(upperLetter) && !rowYellowLetters.has(upperLetter)) {
+              if (!grayConstraints.includes(upperLetter)) {
+                grayConstraints.push(upperLetter);
+              }
+            }
             break;
           default:
             break;
@@ -186,6 +241,14 @@ function extractConstraintsWU() {
       });
     }
   });
+
+  // Debug logging
+  console.log('=== WORDLE UNLIMITED CONSTRAINT EXTRACTION DEBUG ===');
+  console.log('Green constraints:', greenConstraints);
+  console.log('Yellow constraints:', yellowConstraints);
+  console.log('Gray constraints:', grayConstraints);
+  console.log('================================================');
+
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
 
