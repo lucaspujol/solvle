@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const showHideBtn = document.getElementById('showHideBtn');
   const autorefreshBtn = document.getElementById('autorefreshBtn');
   const themeBtn = document.getElementById('themeBtn');
+  const modeBtn = document.getElementById('modeBtn');
   const overlayLabel = document.getElementById('overlayLabel');
   const autorefreshLabel = document.getElementById('autorefreshLabel');
   const themeLabel = document.getElementById('themeLabel');
+  const modeLabel = document.getElementById('modeLabel');
 
   // Get current state when popup opens
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -13,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateOverlayButton(response.visible);
         updateAutorefreshButton(response.autoplay);
         updateThemeButton(response.theme);
+        updateModeButton(response.mode);
       }
     });
   });
@@ -44,6 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleTheme' }, function(response) {
         if (response) {
           updateThemeButton(response.theme);
+        }
+      });
+    });
+  });
+
+  modeBtn.addEventListener('click', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleMode' }, function(response) {
+        if (response) {
+          updateModeButton(response.mode);
         }
       });
     });
@@ -82,6 +95,18 @@ document.addEventListener('DOMContentLoaded', function() {
       themeLabel.textContent = 'Color Theme';
       themeBtn.textContent = 'Light Theme';
       themeBtn.classList.remove('active-state');
+    }
+  }
+
+  function updateModeButton(mode) {
+    if (mode === 'solver') {
+      modeLabel.textContent = 'Mode';
+      modeBtn.textContent = 'Solver Mode';
+      modeBtn.classList.add('active-state');
+    } else {
+      modeLabel.textContent = 'Mode';
+      modeBtn.textContent = 'Helper Mode';
+      modeBtn.classList.remove('active-state');
     }
   }
 });

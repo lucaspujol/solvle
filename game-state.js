@@ -294,12 +294,15 @@ function startAutoplayNY() {
       console.log(`Row ${completedRows} completed! Updating constraints...`);
       previousCompletedRows = completedRows;
 
-      // Only auto-update if autoplay is active
-      if (typeof autoplayActive === 'undefined' || autoplayActive) {
-        setTimeout(() => {
-          filterAndDisplay();
-        }, 300);
-      }
+      // Always update constraints and word count for both modes
+      setTimeout(() => {
+        filterAndDisplay();
+
+        // In Helper mode, also update the word count display
+        if (typeof currentMode !== 'undefined' && currentMode === 'helper') {
+          showWordCount();
+        }
+      }, 300);
     }
   }
 
@@ -367,12 +370,15 @@ function startAutoplayWU() {
       console.log(`Row ${completedRows} completed! Updating constraints...`);
       previousCompletedRows = completedRows;
 
-      // Only auto-update if autoplay is active
-      if (typeof autoplayActive === 'undefined' || autoplayActive) {
-        setTimeout(() => {
-          filterAndDisplay();
-        }, 300);
-      }
+      // Always update constraints and word count for both modes
+      setTimeout(() => {
+        filterAndDisplay();
+
+        // In Helper mode, also update the word count display
+        if (typeof currentMode !== 'undefined' && currentMode === 'helper') {
+          showWordCount();
+        }
+      }, 300);
     }
   }
 

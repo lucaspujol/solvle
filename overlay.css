@@ -300,10 +300,67 @@
   background: var(--wordle-black);
 }
 
+/* Word count display for Helper mode - Simple styling */
+#word-count {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Helper mode specific styling */
+.helper-mode #word-list {
+  display: none !important;
+}
+
+.helper-mode #navigation {
+  display: none !important;
+}
+
+.helper-mode #suggest-button {
+  display: none !important;
+}
+
+.helper-mode #word-count {
+  display: block !important;
+}
+
+.helper-mode .random-word-text {
+  cursor: default !important;
+  opacity: 0.8;
+}
+
+/* Solver mode specific styling */
+.solver-mode #word-count {
+  display: none !important;
+}
+
+.solver-mode #word-list {
+  display: block !important;
+}
+
+.solver-mode #navigation {
+  display: flex !important;
+}
+
+.solver-mode #suggest-button {
+  display: block !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 400px) {
   #hello-world-overlay {
     width: calc(100vw - 40px);
     right: 20px;
+  }
+
+  #word-count {
+    padding: 15px;
+    font-size: 16px;
   }
 }

@@ -3,6 +3,43 @@
 
 let overlayVisible = true;
 
+function updateUIForMode(mode) {
+  const overlay = document.getElementById('hello-world-overlay');
+  const randomButton = document.getElementById('random-button');
+
+  if (mode === 'helper') {
+    // Apply helper mode styling
+    if (overlay) {
+      overlay.className = 'helper-mode';
+    }
+
+    if (randomButton) {
+      randomButton.textContent = 'Random Start Word';
+      randomButton.onclick = () => getRandomWord();
+    }
+
+    // Update word count by running filter but only showing count
+    filterAndDisplay();
+    showWordCount();
+  } else {
+    // Apply solver mode styling
+    if (overlay) {
+      overlay.className = 'solver-mode';
+    }
+
+    if (randomButton) {
+      randomButton.textContent = 'Random Word';
+      randomButton.onclick = () => getRandomFilteredWord();
+    }
+
+    hideWordCount();
+    if (currentWords.length > 0) {
+      displayWords(currentWords, currentPage);
+      updatePagination();
+    }
+  }
+}
+
 // Pagination state
 let currentWords = [];
 let currentPage = 0;
@@ -223,20 +260,61 @@ function autoTypeWord(word) {
   typeNextLetter();
 }
 
-function highlightRandomWord(randomWord) {
+function highlightRandomWord(randomWord, clickable = true) {
   const randomWordTextDiv = document.querySelector('.random-word-text');
   if (randomWordTextDiv) {
     // Display the random word in the dedicated area
     randomWordTextDiv.textContent = randomWord.toUpperCase();
-    randomWordTextDiv.classList.add('clickable-word');
 
-    // Make it clickable to auto-type
-    randomWordTextDiv.onclick = () => autoTypeWord(randomWord);
+    if (clickable) {
+      randomWordTextDiv.classList.add('clickable-word');
+      // Make it clickable to auto-type
+      randomWordTextDiv.onclick = () => autoTypeWord(randomWord);
+    } else {
+      randomWordTextDiv.classList.remove('clickable-word');
+      // Remove click handler
+      randomWordTextDiv.onclick = null;
+    }
 
     // Add flash animation
     randomWordTextDiv.classList.add('random-word-highlight');
     setTimeout(() => {
       randomWordTextDiv.classList.remove('random-word-highlight');
     }, 1000);
+  }
+}
+
+// TODO(human): Add the four helper functions here:
+// showWordCount(), hideWordCount(), getRandomStartWord(), getRandomFilteredWord()
+function showWordCount() {
+  let wordCountDiv = document.getElementById('word-count');
+  if (!wordCountDiv) {
+    wordCountDiv = document.createElement('div');
+    wordCountDiv.id = 'word-count';
+    const overlay = document.getElementById('hello-world-overlay');
+    overlay.appendChild(wordCountDiv);
+  }
+
+  const totalWords = currentWords.length;
+  wordCountDiv.textContent = `${totalWords} possible words`;
+  wordCountDiv.style.display = 'block';
+}
+
+function hideWordCount() {
+  const wordCountDiv = document.getElementById('word-count');
+  if (wordCountDiv) {
+    wordCountDiv.style.display = 'none';
+  }
+}
+
+function getRandomWord() {
+  const randomWord = allWords[Math.floor(Math.random() * allWords.length)]
+  highlightRandomWord(randomWord, false); // Non-clickable in Helper mode
+}
+
+function getRandomFilteredWord() {
+  if (currentWords.length > 0) {
+    const randomWord = currentWords[Math.floor(Math.random() * currentWords.length)];
+    highlightRandomWord(randomWord, true); // Clickable in Solver mode
   }
 }
