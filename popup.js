@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
   const showHideBtn = document.getElementById('showHideBtn');
-  const autoplayBtn = document.getElementById('autoplayBtn');
+  const autorefreshBtn = document.getElementById('autorefreshBtn');
   const themeBtn = document.getElementById('themeBtn');
   const overlayLabel = document.getElementById('overlayLabel');
-  const autoplayLabel = document.getElementById('autoplayLabel');
+  const autorefreshLabel = document.getElementById('autorefreshLabel');
   const themeLabel = document.getElementById('themeLabel');
 
   // Get current state when popup opens
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.sendMessage(tabs[0].id, { action: 'getState' }, function(response) {
       if (response) {
         updateOverlayButton(response.visible);
-        updateAutoplayButton(response.autoplay);
+        updateAutorefreshButton(response.autoplay);
         updateThemeButton(response.theme);
       }
     });
@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Handle autoplay button click
-  autoplayBtn.addEventListener('click', function() {
+  // Handle autorefresh button click
+  autorefreshBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleAutoplay' }, function(response) {
         if (response) {
-          updateAutoplayButton(response.autoplay);
+          updateAutorefreshButton(response.autoplay);
         }
       });
     });
@@ -61,15 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function updateAutoplayButton(active) {
+  function updateAutorefreshButton(active) {
     if (active) {
-      autoplayLabel.textContent = 'Autoplay';
-      autoplayBtn.textContent = 'Autoplay On';
-      autoplayBtn.classList.add('active-state');
+      autorefreshLabel.textContent = 'Auto Refresh';
+      autorefreshBtn.textContent = 'On';
+      autorefreshBtn.classList.add('active-state');
     } else {
-      autoplayLabel.textContent = 'Autoplay';
-      autoplayBtn.textContent = 'Autoplay Off';
-      autoplayBtn.classList.remove('active-state');
+      autorefreshLabel.textContent = 'Auto Refresh';
+      autorefreshBtn.textContent = 'Off';
+      autorefreshBtn.classList.remove('active-state');
     }
   }
 
