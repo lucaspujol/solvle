@@ -13,13 +13,21 @@
     }
 
     .header {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       margin-bottom: 20px;
       font-weight: 600;
       font-size: 18px;
       color: #1a1a1a;
       padding-bottom: 10px;
       border-bottom: 2px solid #6ca965;
+    }
+
+    .logo {
+      width: 24px;
+      height: 24px;
     }
 
     .control-section {
@@ -107,7 +115,10 @@
   </style>
 </head>
 <body>
-  <div class="header">Solvle Helper</div>
+  <div class="header">
+    <img src="Solvle_logo.png" alt="Solvle Logo" class="logo">
+    <span>Solvle Helper</span>
+  </div>
 
   <div class="control-section">
     <div class="control-row">
