@@ -1,16 +1,110 @@
 // Wordle Game State Management
 // Handles interaction with the Wordle game DOM and extracting game constraints
 
-// TODO(human): Implement detectWordleVariant function
-// Should return 'wordleunlimited' or 'nytimes' based on window.location.hostname
-// Use this to determine which DOM extraction logic to use
-
 function detectWordleVariant() {
-  // TODO(human): Add detection logic here
-  // Return 'wordleunlimited' or 'nytimes'
+  const hostname = window.location.hostname;
+  
+  if (hostname.includes('wordleunlimited')) {
+    return 'wordleunlimited';
+  } else if (hostname.includes('nytimes')){
+    return 'nytimes';
+  } else {
+    return 'unkown';
+  }
 }
 
 function logAllTiles() {
+  const variant = detectWordleVariant();
+
+  switch (variant) {
+    case 'nytimes':
+      return logAllTilesNY();
+    case 'wordleunlimited':
+      return logAllTilesWU();
+    default:
+      console.log('Unexpected error: unknown Wordle variant');
+      return;
+  }
+}
+
+function extractConstraintsNY() {
+  const greenConstraints = {};
+  const yellowConstraints = {};
+  const grayConstraints = [];
+
+  const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+
+  gameRows.forEach((row, rowIndex) => {
+    const tiles = row.querySelectorAll('[data-testid="tile"]');
+
+    tiles.forEach((tile, colIndex) => {
+      const state = tile.getAttribute('data-state');
+      const label = tile.getAttribute('aria-label');
+      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+
+      if (!letter) {
+        return;
+      }
+      switch (state) {
+        case 'correct':
+        case 'closed':
+          greenConstraints[colIndex] = letter;
+          break;
+        case 'present':
+          if (!yellowConstraints[letter]) {
+            yellowConstraints[letter] = [];
+          }
+          yellowConstraints[letter].push(colIndex);
+          break;
+        case 'absent':
+          if (!grayConstraints.includes(letter)) {
+            grayConstraints.push(letter);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  });
+  return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
+}
+
+function logAllTilesNY() {
+  const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+
+  console.log('=== NY TIMES WORDLE STATE ===');
+  gameRows.forEach((row, rowIndex) => {
+    const tiles = row.querySelectorAll('[data-testid="tile"]');
+    const rowLetters = [];
+    let hasEvaluatedTiles = false;
+
+    tiles.forEach((tile, colIndex) => {
+      const state = tile.getAttribute('data-state');
+      const label = tile.getAttribute('aria-label');
+      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+
+      // Only process tiles with evaluated states (skip empty, tbd, etc.)
+      if (letter && (state === 'correct' || state === 'closed' || state === 'present' || state === 'absent')) {
+        hasEvaluatedTiles = true;
+
+        const stateIcon = state === 'correct' || state === 'closed' ? '🟩' :
+                         state === 'present' ? '🟨' :
+                         state === 'absent' ? '⬜' : '⬛';
+
+        rowLetters.push(`${letter}${stateIcon}`);
+        console.log(`  [${rowIndex},${colIndex}] ${letter} ${stateIcon} ${state}`);
+      }
+    });
+
+    // Only show row summary if it has evaluated tiles
+    if (hasEvaluatedTiles && rowLetters.length > 0) {
+      console.log(`Row ${rowIndex}: ${rowLetters.join(' ')}`);
+    }
+  });
+  console.log('========================');
+}
+
+function logAllTilesWU() {
   // Access the game through shadow DOM
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
@@ -44,14 +138,17 @@ function logAllTiles() {
 function extractConstraints() {
   const variant = detectWordleVariant();
 
-  if (variant === 'nytimes') {
-    return extractNYTimesConstraints();
-  } else {
-    return extractWordleUnlimitedConstraints();
+  switch (variant) {
+    case 'nytimes':
+      return extractConstraintsNY();
+    case 'wordleunlimited':
+      return extractConstraintsWU();
+    default:
+      return { green: {}, yellow: {}, gray: [] };
   }
 }
 
-function extractWordleUnlimitedConstraints() {
+function extractConstraintsWU() {
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
     console.log('Game not loaded yet');
@@ -92,15 +189,6 @@ function extractWordleUnlimitedConstraints() {
     }
   });
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
-}
-
-// TODO(human): Implement extractNYTimesConstraints function
-// Should return the same structure: { green: {}, yellow: {}, gray: [] }
-// Will need different DOM selectors for NY Times Wordle
-function extractNYTimesConstraints() {
-  // TODO(human): Add NY Times specific DOM extraction logic
-  // For now, return empty constraints
-  return { green: {}, yellow: {}, gray: [] };
 }
 
 function startAutoplay() {
