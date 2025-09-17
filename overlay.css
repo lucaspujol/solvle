@@ -214,6 +214,56 @@
   border-bottom: none;
 }
 
+/* Clickable word styling */
+.clickable-word {
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  padding: 12px 8px;
+  border-radius: 4px;
+}
+
+.clickable-word:hover {
+  background-color: var(--wordle-gray);
+  color: var(--wordle-white);
+}
+
+.clickable-word:active {
+  background-color: var(--wordle-yellow);
+  transform: scale(0.98);
+}
+
+@keyframes pulseHighlight {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Random word display area */
+#random-word-display {
+  background-color: var(--bg-secondary);
+  border: var(--wordle-border) solid var(--border-color);
+  border-radius: 4px;
+  padding: 15px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.random-word-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.random-word-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
 /* Letter tiles */
 .letter-tile {
   width: 40px;
