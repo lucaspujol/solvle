@@ -47,9 +47,7 @@ function filterAndDisplay() {
   const rawConstraints = extractConstraints();
   const constraints = cleanConstraints(rawConstraints);
   currentWords = filterWords(constraints.green, constraints.yellow, constraints.gray);
-
-  // TODO: fliter words by frequency
-  // sortWords(constaints.green, constraints.yellow, currentWords)
+  currentWords = sortWords(currentWords, constraints.green, constraints.yellow);
   currentPage = 0;
   displayWords(currentWords, currentPage);
   updatePagination();
