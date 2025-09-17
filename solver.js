@@ -93,11 +93,32 @@ function filterWords(greenConstraints, yellowConstraints = {}, grayConstraints =
   return filteredWords;
 }
 
-// Future: Add word scoring/ranking
-function scoreWords(validWords) {
-  // TODO: Implement word scoring based on:
-  // - Letter frequency
-  // - Information gain
-  // - Word commonality
-  return validWords;
+function sortWords(words, greenConstraints, yellowConstraints) {
+  // 1. Find already-discovered letters
+  const knownLetters = new Set(Object.values(greenConstraints));
+  const yellowLetters = new Set(Object.keys(yellowConstraints))
+  yellowLetters.forEach(letter => {
+    knownLetters.add(letter);
+  })
+
+  if (knownLetters.size === 5) {
+    return words;
+  }
+
+  // 2. Score words by letter frequency of new letters
+  const scores = [];
+  for (const word of words) {
+    const newLetters = new Set([...word].filter(letter => !knownLetters.has(letter)));
+    let score = 0;
+    for (const letter of newLetters) {
+      score += letterFrequencies[letter.toLowerCase()] || 0;
+    }
+    scores.push({ word, score });
+  }
+
+  // 3. Sort by score descending
+  scores.sort((a, b) => b.score - a.score);
+  const sortedWords = scores.map(item => item.word);
+
+  return sortedWords;
 }
