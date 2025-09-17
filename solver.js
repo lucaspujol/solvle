@@ -105,13 +105,15 @@ function sortWords(words, greenConstraints, yellowConstraints) {
     return words;
   }
 
-  // 2. Score words by letter frequency of new letters
+  // 2. Score words by positional frequency of new letters
   const scores = [];
   for (const word of words) {
-    const newLetters = new Set([...word].filter(letter => !knownLetters.has(letter)));
     let score = 0;
-    for (const letter of newLetters) {
-      score += letterFrequencies[letter.toLowerCase()] || 0;
+    for (let pos = 0; pos < word.length; pos++) {
+      const letter = word[pos];
+      if (!knownLetters.has(letter)) {
+        score += letterFrequencies[letter.toLowerCase()][pos] || 0;
+      }
     }
     scores.push({ word, score });
   }
