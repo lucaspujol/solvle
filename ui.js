@@ -98,6 +98,28 @@ function createOverlay() {
   const overlay = document.createElement('div');
   overlay.id = 'hello-world-overlay';
 
+  // Restore saved position from localStorage
+  const savedPosition = localStorage.getItem('solvle-overlay-position');
+  if (savedPosition) {
+    try {
+      const position = JSON.parse(savedPosition);
+
+      // Validate position is still on screen
+      const maxLeft = window.innerWidth - 350; // overlay width
+      const maxTop = window.innerHeight - 200; // minimum overlay height
+
+      if (position.left >= 0 && position.left <= maxLeft &&
+          position.top >= 0 && position.top <= maxTop) {
+        overlay.style.top = position.top + 'px';
+        overlay.style.left = position.left + 'px';
+        overlay.style.right = 'auto'; // Remove default right positioning
+      }
+    } catch (e) {
+      // If parsing fails, use default position
+      console.log('Failed to parse saved overlay position');
+    }
+  }
+
   // Create draggable header
   const header = document.createElement('div');
   header.className = 'solvle-header';
@@ -121,6 +143,7 @@ function createOverlay() {
 
   header.appendChild(text);
 
+
   let isDragging = false;
   let dragOffset = { x: 0, y: 0 };
 
@@ -141,8 +164,18 @@ function createOverlay() {
   });
 
   document.addEventListener('mouseup', () => {
-    isDragging = false;
-  })
+    if (isDragging) {
+      isDragging = false;
+
+      // Save position to localStorage when dragging stops
+      const rect = overlay.getBoundingClientRect();
+      const position = {
+        top: rect.top,
+        left: rect.left
+      };
+      localStorage.setItem('solvle-overlay-position', JSON.stringify(position));
+    }
+  });
 
   // Word suggestion button
   const suggestButton = document.createElement('button');
@@ -216,23 +249,6 @@ function createOverlay() {
   overlay.appendChild(navDiv);
   overlay.appendChild(randomButton);
   overlay.appendChild(randomWordDiv);
-
-  // Add resize handles
-  const handleNW = document.createElement('div');
-  handleNW.className = 'resize-handle resize-nw';
-  overlay.appendChild(handleNW);
-
-  const handleNE = document.createElement('div');
-  handleNE.className = 'resize-handle resize-ne';
-  overlay.appendChild(handleNE);
-
-  const handleSW = document.createElement('div');
-  handleSW.className = 'resize-handle resize-sw';
-  overlay.appendChild(handleSW);
-
-  const handleSE = document.createElement('div');
-  handleSE.className = 'resize-handle resize-se';
-  overlay.appendChild(handleSE);
 
   document.body.appendChild(overlay);
 }
