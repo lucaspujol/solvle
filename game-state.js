@@ -192,7 +192,92 @@ function extractConstraintsWU() {
 }
 
 function startAutoplay() {
+  const variant = detectWordleVariant();
+
+  switch (variant) {
+    case 'nytimes':
+      return startAutoplayNY();
+    case 'wordleunlimited':
+      return startAutoplayWU();
+    default:
+      console.log('Autoplay not supported for this Wordle variant');
+      return;
+  }
+}
+
+function startAutoplayNY() {
+  let previousCompletedRows = 0;
+  let tileObservers = [];
+
+  function checkForNewCompletedRows() {
+    const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+    let completedRows = 0;
+
+    gameRows.forEach(row => {
+      const tiles = row.querySelectorAll('[data-testid="tile"]');
+      let evaluatedTiles = 0;
+
+      tiles.forEach(tile => {
+        const state = tile.getAttribute('data-state');
+        if (state === 'correct' || state === 'closed' || state === 'present' || state === 'absent') {
+          evaluatedTiles++;
+        }
+      });
+
+      if (evaluatedTiles === 5) {
+        completedRows++;
+      }
+    });
+
+    if (completedRows > previousCompletedRows) {
+      console.log(`Row ${completedRows} completed! Updating constraints...`);
+      previousCompletedRows = completedRows;
+
+      // Only auto-update if autoplay is active
+      if (typeof autoplayActive === 'undefined' || autoplayActive) {
+        setTimeout(() => {
+          filterAndDisplay();
+        }, 300);
+      }
+    }
+  }
+
+  function setupTileObservers() {
+    // Clear existing observers
+    tileObservers.forEach(obs => obs.disconnect());
+    tileObservers = [];
+
+    const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+
+    gameRows.forEach(row => {
+      const tiles = row.querySelectorAll('[data-testid="tile"]');
+
+      tiles.forEach(tile => {
+        const tileObserver = new MutationObserver(() => {
+          checkForNewCompletedRows();
+        });
+
+        tileObserver.observe(tile, {
+          attributes: true,
+          attributeFilter: ['data-state']
+        });
+
+        tileObservers.push(tileObserver);
+      });
+    });
+  }
+
+  setupTileObservers();
+  console.log('NY Times tile observers started - now play a word!');
+}
+
+function startAutoplayWU() {
   const gameApp = document.querySelector('game-app');
+  if (!gameApp || !gameApp.shadowRoot) {
+    console.log('WordleUnlimited game not loaded yet');
+    return;
+  }
+
   let previousCompletedRows = 0;
   let tileObservers = [];
 
@@ -269,5 +354,5 @@ function startAutoplay() {
     subtree: true
   });
 
-  console.log('Tile observers started - now play a word!');
+  console.log('WordleUnlimited tile observers started - now play a word!');
 }
