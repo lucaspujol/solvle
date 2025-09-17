@@ -15,8 +15,17 @@ function displayWords(words, page) {
   const wordListDiv = document.getElementById('word-list');
   if (pagesWords.length > 0) {
     wordListDiv.innerHTML = pagesWords
-      .map(word => `<div class="word-entry">${word.toUpperCase()}</div>`)
+      .map(word => `<div class="word-entry clickable-word" data-word="${word}">${word.toUpperCase()}</div>`)
       .join('');
+
+    // Add click listeners to words
+    const wordEntries = wordListDiv.querySelectorAll('.clickable-word');
+    wordEntries.forEach(entry => {
+      entry.addEventListener('click', function() {
+        const word = this.getAttribute('data-word');
+        autoTypeWord(word);
+      });
+    });
   } else {
     wordListDiv.innerHTML = '';
   }
@@ -38,17 +47,9 @@ function filterAndDisplay() {
   const rawConstraints = extractConstraints();
   const constraints = cleanConstraints(rawConstraints);
   currentWords = filterWords(constraints.green, constraints.yellow, constraints.gray);
-  console.log('Green constraints:', constraints.green);
-  console.log('Yellow constraints:', constraints.yellow);
-  console.log('Gray constraints:', constraints.gray);
-  console.log('Filtered words:', currentWords.length);
 
   // TODO: fliter words by frequency
   // sortWords(constaints.green, constraints.yellow, currentWords)
-  if (currentWords.length > 0) {
-    const firstTenWords = currentWords.slice(0, 10);
-    console.log('First 10 filtered words:', firstTenWords);
-  }
   currentPage = 0;
   displayWords(currentWords, currentPage);
   updatePagination();
@@ -77,14 +78,6 @@ function createOverlay() {
     .map(({ letter, color }) => `<div class="header-tile ${color}">${letter}</div>`)
     .join('');
 
-  const logTilesButton = document.createElement('button');
-  logTilesButton.textContent = 'Log all tiles'
-  logTilesButton.id = 'log-tiles-button';
-  logTilesButton.className = 'solvle-button';
-  logTilesButton.addEventListener('click', function() {
-    logAllTiles();
-  });
-
   // Word suggestion button
   const suggestButton = document.createElement('button');
   suggestButton.textContent = 'Find Words';
@@ -94,9 +87,26 @@ function createOverlay() {
     filterAndDisplay();
   });
 
+  // Random word button
+  const randomButton = document.createElement('button');
+  randomButton.textContent = 'Random Word';
+  randomButton.id = 'random-button';
+  randomButton.className = 'solvle-button';
+  randomButton.addEventListener('click', function() {
+    if (currentWords.length > 0) {
+      const randomWord = currentWords[Math.floor(Math.random() * currentWords.length)];
+      highlightRandomWord(randomWord);
+    }
+  });
+
   // Word list display area
   const wordListDiv = document.createElement('div');
   wordListDiv.id = 'word-list';
+
+  // Random word display area
+  const randomWordDiv = document.createElement('div');
+  randomWordDiv.id = 'random-word-display';
+  randomWordDiv.innerHTML = '<div class="random-word-label">Random Suggestion:</div><div class="random-word-text">Click "Random Word" for suggestion</div>';
 
   // Navigation controls
   const navDiv = document.createElement('div');
@@ -135,9 +145,10 @@ function createOverlay() {
 
   overlay.appendChild(text);
   overlay.appendChild(suggestButton);
-  overlay.appendChild(logTilesButton);
   overlay.appendChild(wordListDiv);
   overlay.appendChild(navDiv);
+  overlay.appendChild(randomButton);
+  overlay.appendChild(randomWordDiv);
   document.body.appendChild(overlay);
 }
 
@@ -146,5 +157,88 @@ function toggleOverlay() {
   if (overlay) {
     overlayVisible = !overlayVisible;
     overlay.style.display = overlayVisible ? 'flex' : 'none';
+  }
+}
+
+// Auto-type functionality
+function simulateKeyPress(key) {
+  const keyEvent = new KeyboardEvent('keydown', {
+    key: key,
+    code: `Key${key.toUpperCase()}`,
+    keyCode: key.toUpperCase().charCodeAt(0),
+    which: key.toUpperCase().charCodeAt(0),
+    bubbles: true,
+    cancelable: true
+  });
+  document.dispatchEvent(keyEvent);
+
+  const keyUpEvent = new KeyboardEvent('keyup', {
+    key: key,
+    code: `Key${key.toUpperCase()}`,
+    keyCode: key.toUpperCase().charCodeAt(0),
+    which: key.toUpperCase().charCodeAt(0),
+    bubbles: true,
+    cancelable: true
+  });
+  document.dispatchEvent(keyUpEvent);
+}
+
+function simulateEnterKey() {
+  const enterEvent = new KeyboardEvent('keydown', {
+    key: 'Enter',
+    code: 'Enter',
+    keyCode: 13,
+    which: 13,
+    bubbles: true,
+    cancelable: true
+  });
+  document.dispatchEvent(enterEvent);
+
+  const enterUpEvent = new KeyboardEvent('keyup', {
+    key: 'Enter',
+    code: 'Enter',
+    keyCode: 13,
+    which: 13,
+    bubbles: true,
+    cancelable: true
+  });
+  document.dispatchEvent(enterUpEvent);
+}
+
+function autoTypeWord(word) {
+  const letters = word.toUpperCase().split('');
+  let index = 0;
+
+  function typeNextLetter() {
+    if (index < letters.length) {
+      simulateKeyPress(letters[index]);
+      index++;
+      setTimeout(typeNextLetter, 100); // 100ms delay between letters
+    } else {
+      // Submit the word after typing
+      setTimeout(() => {
+        simulateEnterKey();
+      }, 200);
+    }
+  }
+
+  typeNextLetter();
+}
+
+function highlightRandomWord(randomWord) {
+  const randomWordTextDiv = document.querySelector('.random-word-text');
+  if (randomWordTextDiv) {
+    // Display the random word in the dedicated area
+    randomWordTextDiv.textContent = randomWord.toUpperCase();
+    randomWordTextDiv.classList.add('clickable-word');
+
+    // Make it clickable to auto-type
+    randomWordTextDiv.onclick = () => autoTypeWord(randomWord);
+
+    // Add flash animation
+    randomWordTextDiv.classList.add('random-word-highlight');
+    setTimeout(() => {
+      randomWordTextDiv.classList.remove('random-word-highlight');
+    }, 1000);
   }
 }
