@@ -3,10 +3,16 @@
   "name": "Solvle - Wordle Helper",
   "version": "1.0",
   "description": "A Firefox extension that helps solve Wordle puzzles by suggesting optimal word choices",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lucas.pujol.60240@hotmail.com"
+    }
+  },
   "icons": {
-    "16": "Solvle_logo.png",
-    "48": "Solvle_logo.png",
-    "128": "Solvle_logo.png"
+    "16": "Solvle_logo_16.png",
+    "48": "Solvle_logo_48.png",
+    "128": "Solvle_logo_128.png"
   },
 
   "content_scripts": [
