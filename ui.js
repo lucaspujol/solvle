@@ -51,9 +51,17 @@ function displayWords(words, page) {
   const pagesWords = words.slice(startIndex, endIndex);
   const wordListDiv = document.getElementById('word-list');
   if (pagesWords.length > 0) {
-    wordListDiv.innerHTML = pagesWords
-      .map(word => `<div class="word-entry clickable-word" data-word="${word}">${word.toUpperCase()}</div>`)
-      .join('');
+    // Clear existing content
+    wordListDiv.textContent = '';
+
+    // Create word elements safely
+    pagesWords.forEach(word => {
+      const wordDiv = document.createElement('div');
+      wordDiv.className = 'word-entry clickable-word';
+      wordDiv.dataset.word = word;
+      wordDiv.textContent = word.toUpperCase();
+      wordListDiv.appendChild(wordDiv);
+    });
 
     // Add click listeners to words
     const wordEntries = wordListDiv.querySelectorAll('.clickable-word');
@@ -137,9 +145,13 @@ function createOverlay() {
     { letter: 'E', color: 'green' }
   ];
 
-  text.innerHTML = headerLetters
-    .map(({ letter, color }) => `<div class="header-tile ${color}">${letter}</div>`)
-    .join('');
+  // Create header tiles safely
+  headerLetters.forEach(({ letter, color }) => {
+    const tile = document.createElement('div');
+    tile.className = `header-tile ${color}`;
+    tile.textContent = letter;
+    text.appendChild(tile);
+  });
 
   header.appendChild(text);
 
