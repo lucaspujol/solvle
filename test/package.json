@@ -1,0 +1,16 @@
+{
+  "name": "solvle-test-suite",
+  "version": "2.0.0",
+  "description": "Standalone test suite for Solvle Wordle solver with fixed constraint handling",
+  "main": "run-tests.js",
+  "scripts": {
+    "test": "node run-tests.js",
+    "test:sample": "node run-tests.js --sample 100",
+    "test:quick": "node run-tests.js --sample 25",
+    "test:medium": "node run-tests.js --sample 200",
+    "test:full": "node run-tests.js --full --output full-results.json",
+    "test:debug": "node analyze-failures.js"
+  },
+  "keywords": ["wordle", "solver", "testing", "extension"],
+  "author": "Solvle Team"
+}

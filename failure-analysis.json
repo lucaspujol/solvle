@@ -1,0 +1,452 @@
+{
+  "timestamp": "2025-09-25T14:06:36.712Z",
+  "totalFailures": 16,
+  "failures": [
+    {
+      "targetWord": "SMART",
+      "won": true,
+      "guesses": 4,
+      "finalGuesses": [
+        "SLATE",
+        "START",
+        "START",
+        "SMART"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "DIMLY",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "WOOLY",
+        "CURLY",
+        "BILLY",
+        "FILLY",
+        "DILLY"
+      ],
+      "issue": "low_vowels"
+    },
+    {
+      "targetWord": "SPILT",
+      "won": true,
+      "guesses": 4,
+      "finalGuesses": [
+        "SLATE",
+        "STILT",
+        "STILT",
+        "SPILT"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "MOUTH",
+      "won": true,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "BOOTY",
+        "TOOTH",
+        "TOOTH",
+        "FORTH",
+        "MOUTH"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "STALK",
+      "won": true,
+      "guesses": 5,
+      "finalGuesses": [
+        "SLATE",
+        "SHALT",
+        "STALL",
+        "STALL",
+        "STALK"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "BENCH",
+      "won": true,
+      "guesses": 5,
+      "finalGuesses": [
+        "SLATE",
+        "GOOEY",
+        "BEECH",
+        "BEECH",
+        "BENCH"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "JERKY",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "GOOEY",
+        "BERRY",
+        "FERRY",
+        "MERCY",
+        "PERKY"
+      ],
+      "issue": "uncommon_letters"
+    },
+    {
+      "targetWord": "CHILI",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "WOOLY",
+        "FRILL",
+        "CHILL",
+        "CHILL",
+        "CHILD"
+      ],
+      "issue": "infinite_loop"
+    },
+    {
+      "targetWord": "DUNCE",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "CRONE",
+        "PENCE",
+        "FENCE",
+        "HENCE",
+        "MINCE"
+      ],
+      "issue": "other"
+    },
+    {
+      "targetWord": "UTTER",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "BERET",
+        "TRIED",
+        "METER",
+        "VOTER",
+        "ENTER"
+      ],
+      "issue": "double_letters"
+    },
+    {
+      "targetWord": "WOUND",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "CRONY",
+        "BOUND",
+        "POUND",
+        "FOUND",
+        "MOUND"
+      ],
+      "issue": "uncommon_letters"
+    },
+    {
+      "targetWord": "HAREM",
+      "won": true,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "CAGEY",
+        "PARER",
+        "RARER",
+        "RARER",
+        "HAREM"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "ROAST",
+      "won": true,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "COAST",
+        "BOAST",
+        "TOAST",
+        "TOAST",
+        "ROAST"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "UNION",
+      "won": true,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "CRONY",
+        "BONGO",
+        "ONION",
+        "ONION",
+        "UNION"
+      ],
+      "issue": "none"
+    },
+    {
+      "targetWord": "GRAVE",
+      "won": false,
+      "guesses": 6,
+      "finalGuesses": [
+        "SLATE",
+        "CRANE",
+        "BRAKE",
+        "FRAME",
+        "GRADE",
+        "GRAPE"
+      ],
+      "issue": "uncommon_letters"
+    },
+    {
+      "targetWord": "STILL",
+      "won": true,
+      "guesses": 4,
+      "finalGuesses": [
+        "SLATE",
+        "STILT",
+        "STILT",
+        "STILL"
+      ],
+      "issue": "none"
+    }
+  ],
+  "categories": {
+    "none": [
+      {
+        "targetWord": "SMART",
+        "won": true,
+        "guesses": 4,
+        "finalGuesses": [
+          "SLATE",
+          "START",
+          "START",
+          "SMART"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "SPILT",
+        "won": true,
+        "guesses": 4,
+        "finalGuesses": [
+          "SLATE",
+          "STILT",
+          "STILT",
+          "SPILT"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "MOUTH",
+        "won": true,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "BOOTY",
+          "TOOTH",
+          "TOOTH",
+          "FORTH",
+          "MOUTH"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "STALK",
+        "won": true,
+        "guesses": 5,
+        "finalGuesses": [
+          "SLATE",
+          "SHALT",
+          "STALL",
+          "STALL",
+          "STALK"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "BENCH",
+        "won": true,
+        "guesses": 5,
+        "finalGuesses": [
+          "SLATE",
+          "GOOEY",
+          "BEECH",
+          "BEECH",
+          "BENCH"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "HAREM",
+        "won": true,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "CAGEY",
+          "PARER",
+          "RARER",
+          "RARER",
+          "HAREM"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "ROAST",
+        "won": true,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "COAST",
+          "BOAST",
+          "TOAST",
+          "TOAST",
+          "ROAST"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "UNION",
+        "won": true,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "CRONY",
+          "BONGO",
+          "ONION",
+          "ONION",
+          "UNION"
+        ],
+        "issue": "none"
+      },
+      {
+        "targetWord": "STILL",
+        "won": true,
+        "guesses": 4,
+        "finalGuesses": [
+          "SLATE",
+          "STILT",
+          "STILT",
+          "STILL"
+        ],
+        "issue": "none"
+      }
+    ],
+    "low_vowels": [
+      {
+        "targetWord": "DIMLY",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "WOOLY",
+          "CURLY",
+          "BILLY",
+          "FILLY",
+          "DILLY"
+        ],
+        "issue": "low_vowels"
+      }
+    ],
+    "uncommon_letters": [
+      {
+        "targetWord": "JERKY",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "GOOEY",
+          "BERRY",
+          "FERRY",
+          "MERCY",
+          "PERKY"
+        ],
+        "issue": "uncommon_letters"
+      },
+      {
+        "targetWord": "WOUND",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "CRONY",
+          "BOUND",
+          "POUND",
+          "FOUND",
+          "MOUND"
+        ],
+        "issue": "uncommon_letters"
+      },
+      {
+        "targetWord": "GRAVE",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "CRANE",
+          "BRAKE",
+          "FRAME",
+          "GRADE",
+          "GRAPE"
+        ],
+        "issue": "uncommon_letters"
+      }
+    ],
+    "infinite_loop": [
+      {
+        "targetWord": "CHILI",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "WOOLY",
+          "FRILL",
+          "CHILL",
+          "CHILL",
+          "CHILD"
+        ],
+        "issue": "infinite_loop"
+      }
+    ],
+    "other": [
+      {
+        "targetWord": "DUNCE",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "CRONE",
+          "PENCE",
+          "FENCE",
+          "HENCE",
+          "MINCE"
+        ],
+        "issue": "other"
+      }
+    ],
+    "double_letters": [
+      {
+        "targetWord": "UTTER",
+        "won": false,
+        "guesses": 6,
+        "finalGuesses": [
+          "SLATE",
+          "BERET",
+          "TRIED",
+          "METER",
+          "VOTER",
+          "ENTER"
+        ],
+        "issue": "double_letters"
+      }
+    ]
+  }
+}

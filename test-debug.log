@@ -1,0 +1,464 @@
+[2025-09-25T13:57:07.168Z] Loaded 2315 words
+
+[2025-09-25T13:57:07.169Z] Solver stats:
+{
+  "totalWords": 2315,
+  "hasFilterWords": true,
+  "hasSortWords": true,
+  "hasConstraintMatching": true
+}
+
+[2025-09-25T13:57:07.170Z] Starting focused debug test...
+
+[2025-09-25T13:57:07.170Z] Starting debug test with 3 words
+
+[2025-09-25T13:57:07.170Z] 
+
+🎯 Testing word 1/3: aback
+
+[2025-09-25T13:57:07.170Z] 
+============================================================
+
+[2025-09-25T13:57:07.170Z] Starting game: aback
+
+[2025-09-25T13:57:07.170Z] === Starting game for target: ABACK ===
+
+[2025-09-25T13:57:07.170Z] 
+--- Turn 1 ---
+
+[2025-09-25T13:57:07.171Z] About to guess: SLATE
+
+[2025-09-25T13:57:07.171Z] Guess #1: SLATE
+
+[2025-09-25T13:57:07.171Z] Evaluating: SLATE vs ABACK
+
+[2025-09-25T13:57:07.171Z] Tile results:
+[
+  {
+    "letter": "S",
+    "status": "gray"
+  },
+  {
+    "letter": "L",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "T",
+    "status": "gray"
+  },
+  {
+    "letter": "E",
+    "status": "gray"
+  }
+]
+
+[2025-09-25T13:57:07.171Z] Guess result:
+[
+  {
+    "letter": "S",
+    "status": "gray"
+  },
+  {
+    "letter": "L",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "T",
+    "status": "gray"
+  },
+  {
+    "letter": "E",
+    "status": "gray"
+  }
+]
+
+[2025-09-25T13:57:07.171Z] Game continues - generating constraints from 1 guesses
+
+[2025-09-25T13:57:07.171Z] Generated constraints:
+{
+  "greenConstraints": {
+    "2": "A"
+  },
+  "yellowConstraints": {},
+  "grayConstraints": [
+    "S",
+    "L",
+    "T",
+    "E"
+  ]
+}
+
+[2025-09-25T13:57:07.171Z] Calling solver.getSuggestions...
+
+[2025-09-25T13:57:07.177Z] Solver returned 48 suggestions:
+[
+  "crazy",
+  "foamy",
+  "diary",
+  "gravy",
+  "coach",
+  "crank",
+  "brand",
+  "crack",
+  "brain",
+  "board"
+]
+
+[2025-09-25T13:57:07.177Z] Next guess will be: crazy
+
+[2025-09-25T13:57:07.177Z] 
+--- Turn 2 ---
+
+[2025-09-25T13:57:07.177Z] About to guess: crazy
+
+[2025-09-25T13:57:07.177Z] Guess #2: CRAZY
+
+[2025-09-25T13:57:07.177Z] Evaluating: CRAZY vs ABACK
+
+[2025-09-25T13:57:07.177Z] Tile results:
+[
+  {
+    "letter": "C",
+    "status": "yellow"
+  },
+  {
+    "letter": "R",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "Z",
+    "status": "gray"
+  },
+  {
+    "letter": "Y",
+    "status": "gray"
+  }
+]
+
+[2025-09-25T13:57:07.177Z] Guess result:
+[
+  {
+    "letter": "C",
+    "status": "yellow"
+  },
+  {
+    "letter": "R",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "Z",
+    "status": "gray"
+  },
+  {
+    "letter": "Y",
+    "status": "gray"
+  }
+]
+
+[2025-09-25T13:57:07.178Z] Game continues - generating constraints from 2 guesses
+
+[2025-09-25T13:57:07.178Z] Generated constraints:
+{
+  "greenConstraints": {
+    "2": "A"
+  },
+  "yellowConstraints": {
+    "C": [
+      0
+    ]
+  },
+  "grayConstraints": [
+    "S",
+    "L",
+    "T",
+    "E",
+    "R",
+    "Z",
+    "Y"
+  ]
+}
+
+[2025-09-25T13:57:07.178Z] Calling solver.getSuggestions...
+
+[2025-09-25T13:57:07.182Z] Solver returned 4 suggestions:
+[
+  "whack",
+  "quack",
+  "aback",
+  "knack"
+]
+
+[2025-09-25T13:57:07.182Z] Next guess will be: whack
+
+[2025-09-25T13:57:07.182Z] 
+--- Turn 3 ---
+
+[2025-09-25T13:57:07.182Z] About to guess: whack
+
+[2025-09-25T13:57:07.182Z] Guess #3: WHACK
+
+[2025-09-25T13:57:07.182Z] Evaluating: WHACK vs ABACK
+
+[2025-09-25T13:57:07.182Z] Tile results:
+[
+  {
+    "letter": "W",
+    "status": "gray"
+  },
+  {
+    "letter": "H",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.183Z] Guess result:
+[
+  {
+    "letter": "W",
+    "status": "gray"
+  },
+  {
+    "letter": "H",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.183Z] Game continues - generating constraints from 3 guesses
+
+[2025-09-25T13:57:07.183Z] Generated constraints:
+{
+  "greenConstraints": {
+    "2": "A",
+    "3": "C",
+    "4": "K"
+  },
+  "yellowConstraints": {
+    "C": [
+      0
+    ]
+  },
+  "grayConstraints": [
+    "S",
+    "L",
+    "T",
+    "E",
+    "R",
+    "Z",
+    "Y",
+    "W",
+    "H"
+  ]
+}
+
+[2025-09-25T13:57:07.183Z] Calling solver.getSuggestions...
+
+[2025-09-25T13:57:07.187Z] Solver returned 3 suggestions:
+[
+  "quack",
+  "aback",
+  "knack"
+]
+
+[2025-09-25T13:57:07.187Z] Next guess will be: quack
+
+[2025-09-25T13:57:07.187Z] 
+--- Turn 4 ---
+
+[2025-09-25T13:57:07.187Z] About to guess: quack
+
+[2025-09-25T13:57:07.187Z] Guess #4: QUACK
+
+[2025-09-25T13:57:07.187Z] Evaluating: QUACK vs ABACK
+
+[2025-09-25T13:57:07.187Z] Tile results:
+[
+  {
+    "letter": "Q",
+    "status": "gray"
+  },
+  {
+    "letter": "U",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.187Z] Guess result:
+[
+  {
+    "letter": "Q",
+    "status": "gray"
+  },
+  {
+    "letter": "U",
+    "status": "gray"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.187Z] Game continues - generating constraints from 4 guesses
+
+[2025-09-25T13:57:07.187Z] Generated constraints:
+{
+  "greenConstraints": {
+    "2": "A",
+    "3": "C",
+    "4": "K"
+  },
+  "yellowConstraints": {
+    "C": [
+      0
+    ]
+  },
+  "grayConstraints": [
+    "S",
+    "L",
+    "T",
+    "E",
+    "R",
+    "Z",
+    "Y",
+    "W",
+    "H",
+    "Q",
+    "U"
+  ]
+}
+
+[2025-09-25T13:57:07.187Z] Calling solver.getSuggestions...
+
+[2025-09-25T13:57:07.191Z] Solver returned 2 suggestions:
+[
+  "aback",
+  "knack"
+]
+
+[2025-09-25T13:57:07.191Z] Next guess will be: aback
+
+[2025-09-25T13:57:07.191Z] 
+--- Turn 5 ---
+
+[2025-09-25T13:57:07.191Z] About to guess: aback
+
+[2025-09-25T13:57:07.191Z] Guess #5: ABACK
+
+[2025-09-25T13:57:07.191Z] Evaluating: ABACK vs ABACK
+
+[2025-09-25T13:57:07.191Z] Tile results:
+[
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "B",
+    "status": "green"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.191Z] Guess result:
+[
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "B",
+    "status": "green"
+  },
+  {
+    "letter": "A",
+    "status": "green"
+  },
+  {
+    "letter": "C",
+    "status": "green"
+  },
+  {
+    "letter": "K",
+    "status": "green"
+  }
+]
+
+[2025-09-25T13:57:07.191Z] 🎉 WIN! Found target in 5 guesses
+
+[2025-09-25T13:57:07.191Z] Game over - WON
+
+[2025-09-25T13:57:07.192Z] ❌ Debug test failed: game.getGameState is not a function
+
+[2025-09-25T13:57:07.192Z] Error stack:
+"TypeError: game.getGameState is not a function\n    at DebugTestRunner.runSingleGame (/home/lucas/perso/solvle/test/debug-test-framework.js:186:24)\n    at DebugTestRunner.runDebugTest (/home/lucas/perso/solvle/test/debug-test-framework.js:222:37)\n    at runDebugTests (/home/lucas/perso/solvle/test/debug-runner.js:32:23)\n    at Object.<anonymous> (/home/lucas/perso/solvle/test/debug-runner.js:44:3)\n    at Module._compile (node:internal/modules/cjs/loader:1356:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1414:10)\n    at Module.load (node:internal/modules/cjs/loader:1197:32)\n    at Module._load (node:internal/modules/cjs/loader:1013:12)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12)\n    at node:internal/main/run_main_module:28:49"
