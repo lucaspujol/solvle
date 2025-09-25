@@ -7,10 +7,25 @@ function cleanConstraints(constraints) {
   // Remove grays that are green elsewhere
   constraints.gray = constraints.gray.filter(letter => !greenLetters.has(letter));
 
-  // Remove yellows that are green elsewhere
-  for (const greenLetter of greenLetters) {
-    delete constraints.yellow[greenLetter];
+  // FIXED: Don't remove ALL yellow constraints for green letters
+  // Only remove yellow constraints that conflict with specific green positions
+  const cleanedYellows = {};
+  for (const [letter, positions] of Object.entries(constraints.yellow)) {
+    // Find green positions for this letter
+    const greenPositions = Object.keys(constraints.green)
+      .filter(pos => constraints.green[pos] === letter)
+      .map(pos => parseInt(pos));
+
+    // Only keep yellow positions that don't conflict with green positions
+    const validYellowPositions = positions.filter(pos => !greenPositions.includes(pos));
+
+    // Keep yellow constraint if there are still valid positions
+    // This allows duplicate letters where one is green and another is yellow
+    if (validYellowPositions.length > 0) {
+      cleanedYellows[letter] = validYellowPositions;
+    }
   }
+  constraints.yellow = cleanedYellows;
 
   return constraints;
 }
