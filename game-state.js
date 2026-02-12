@@ -1,169 +1,14 @@
-// Wordle Game State Management
-// Handles interaction with the Wordle game DOM and extracting game constraints
-
 function detectWordleVariant() {
   const hostname = window.location.hostname;
-  
+
   if (hostname.includes('wordleunlimited')) {
     return 'wordleunlimited';
-  } else if (hostname.includes('nytimes')){
+  } else if (hostname.includes('nytimes')) {
     return 'nytimes';
   } else {
-    return 'unkown';
+    return 'unknown';
   }
 }
-
-// function logAllTiles() {
-//   const variant = detectWordleVariant();
-
-//   switch (variant) {
-//     case 'nytimes':
-//       return logAllTilesNY();
-//     case 'wordleunlimited':
-//       return logAllTilesWU();
-//     default:
-//       console.error('Unexpected error: unknown Wordle variant');
-//       return;
-//   }
-// }
-
-function extractConstraintsNY() {
-  const greenConstraints = {};
-  const yellowConstraints = {};
-  const grayConstraints = [];
-
-  const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
-
-  gameRows.forEach((row, rowIndex) => {
-    const tiles = row.querySelectorAll('[data-testid="tile"]');
-
-    // First pass: collect all green and yellow letters from this row
-    const rowGreenLetters = new Set();
-    const rowYellowLetters = new Set();
-
-    tiles.forEach((tile, colIndex) => {
-      const state = tile.getAttribute('data-state');
-      const label = tile.getAttribute('aria-label');
-      const letter = label?.match(/letter, ([A-Z])/)?.[1];
-
-      if (!letter) {
-        return;
-      }
-
-      if (state === 'correct' || state === 'closed') {
-        rowGreenLetters.add(letter);
-      } else if (state === 'present') {
-        rowYellowLetters.add(letter);
-      }
-    });
-
-    // Second pass: apply constraints, avoiding gray conflicts
-    tiles.forEach((tile, colIndex) => {
-      const state = tile.getAttribute('data-state');
-      const label = tile.getAttribute('aria-label');
-      const letter = label?.match(/letter, ([A-Z])/)?.[1];
-
-      if (!letter) {
-        return;
-      }
-      switch (state) {
-        case 'correct':
-        case 'closed':
-          greenConstraints[colIndex] = letter;
-          break;
-        case 'present':
-          if (!yellowConstraints[letter]) {
-            yellowConstraints[letter] = [];
-          }
-          yellowConstraints[letter].push(colIndex);
-          break;
-        case 'absent':
-          // Only add to gray if this letter is NOT green or yellow anywhere in this row
-          if (!rowGreenLetters.has(letter) && !rowYellowLetters.has(letter)) {
-            if (!grayConstraints.includes(letter)) {
-              grayConstraints.push(letter);
-            }
-          }
-          break;
-        default:
-          break;
-      }
-    });
-  });
-
-  // Debug logging
-  console.log('=== NY TIMES CONSTRAINT EXTRACTION DEBUG ===');
-  console.log('Green constraints:', greenConstraints);
-  console.log('Yellow constraints:', yellowConstraints);
-  console.log('Gray constraints:', grayConstraints);
-  console.log('==========================================');
-
-  return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
-}
-
-// function logAllTilesNY() {
-//   const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
-
-//   console.log('=== NY TIMES WORDLE STATE ===');
-//   gameRows.forEach((row, rowIndex) => {
-//     const tiles = row.querySelectorAll('[data-testid="tile"]');
-//     const rowLetters = [];
-//     let hasEvaluatedTiles = false;
-
-//     tiles.forEach((tile, colIndex) => {
-//       const state = tile.getAttribute('data-state');
-//       const label = tile.getAttribute('aria-label');
-//       const letter = label?.match(/letter, ([A-Z])/)?.[1];
-
-//       if (letter && (state === 'correct' || state === 'closed' || state === 'present' || state === 'absent')) {
-//         hasEvaluatedTiles = true;
-
-//         const stateIcon = state === 'correct' || state === 'closed' ? '🟩' :
-//                          state === 'present' ? '🟨' :
-//                          state === 'absent' ? '⬜' : '⬛';
-
-//         rowLetters.push(`${letter}${stateIcon}`);
-//         console.log(`  [${rowIndex},${colIndex}] ${letter} ${stateIcon} ${state}`);
-//       }
-//     });
-
-//     if (hasEvaluatedTiles && rowLetters.length > 0) {
-//       console.log(`Row ${rowIndex}: ${rowLetters.join(' ')}`);
-//     }
-//   });
-//   console.log('========================');
-// }
-
-// function logAllTilesWU() {
-//   // Access the game through shadow DOM
-//   const gameApp = document.querySelector('game-app');
-//   if (!gameApp || !gameApp.shadowRoot) {
-//     console.log('Game not loaded yet');
-//     return;
-//   }
-
-//   const shadowRoot = gameApp.shadowRoot;
-//   const gameRows = shadowRoot.querySelectorAll('game-row[letters]');
-
-//   console.log('=== CURRENT GAME STATE ===');
-//   gameRows.forEach((row, rowIndex) => {
-//     const word = row.getAttribute('letters');
-//     if (word && row.shadowRoot) {
-//       console.log(`Row ${rowIndex}: "${word.toUpperCase()}"`);
-
-//       const tiles = row.shadowRoot.querySelectorAll('game-tile');
-//       tiles.forEach((tile, colIndex) => {
-//         const letter = tile.getAttribute('letter');
-//         const evaluation = tile.getAttribute('evaluation');
-//         const stateIcon = evaluation === 'correct' ? '🟩' :
-//                          evaluation === 'present' ? '🟨' :
-//                          evaluation === 'absent' ? '⬜' : '⬛';
-//         console.log(`  [${rowIndex},${colIndex}] ${letter?.toUpperCase()} ${stateIcon} ${evaluation || 'empty'}`);
-//       });
-//     }
-//   });
-//   console.log('========================');
-// }
 
 function extractConstraints() {
   const variant = detectWordleVariant();
@@ -178,10 +23,66 @@ function extractConstraints() {
   }
 }
 
+function extractConstraintsNY() {
+  const greenConstraints = {};
+  const yellowConstraints = {};
+  const grayConstraints = [];
+
+  const gameRows = document.querySelectorAll('[class*="Row-module_row"]');
+
+  gameRows.forEach((row) => {
+    const tiles = row.querySelectorAll('[data-testid="tile"]');
+
+    const rowGreenLetters = new Set();
+    const rowYellowLetters = new Set();
+
+    tiles.forEach((tile) => {
+      const state = tile.getAttribute('data-state');
+      const label = tile.getAttribute('aria-label');
+      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+      if (!letter) return;
+
+      if (state === 'correct' || state === 'closed') {
+        rowGreenLetters.add(letter);
+      } else if (state === 'present') {
+        rowYellowLetters.add(letter);
+      }
+    });
+
+    tiles.forEach((tile, colIndex) => {
+      const state = tile.getAttribute('data-state');
+      const label = tile.getAttribute('aria-label');
+      const letter = label?.match(/letter, ([A-Z])/)?.[1];
+      if (!letter) return;
+
+      switch (state) {
+        case 'correct':
+        case 'closed':
+          greenConstraints[colIndex] = letter;
+          break;
+        case 'present':
+          if (!yellowConstraints[letter]) {
+            yellowConstraints[letter] = [];
+          }
+          yellowConstraints[letter].push(colIndex);
+          break;
+        case 'absent':
+          if (!rowGreenLetters.has(letter) && !rowYellowLetters.has(letter)) {
+            if (!grayConstraints.includes(letter)) {
+              grayConstraints.push(letter);
+            }
+          }
+          break;
+      }
+    });
+  });
+
+  return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
+}
+
 function extractConstraintsWU() {
   const gameApp = document.querySelector('game-app');
   if (!gameApp || !gameApp.shadowRoot) {
-    console.error('Game not loaded yet');
     return {};
   }
 
@@ -191,63 +92,51 @@ function extractConstraintsWU() {
   const yellowConstraints = {};
   const grayConstraints = [];
 
-  gameRows.forEach((row, rowIndex) => {
+  gameRows.forEach((row) => {
     const word = row.getAttribute('letters');
-    if (word && row.shadowRoot) {
-      const tiles = row.shadowRoot.querySelectorAll('game-tile');
+    if (!word || !row.shadowRoot) return;
 
-      // First pass: collect all green and yellow letters from this row
-      const rowGreenLetters = new Set();
-      const rowYellowLetters = new Set();
+    const tiles = row.shadowRoot.querySelectorAll('game-tile');
 
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
+    const rowGreenLetters = new Set();
+    const rowYellowLetters = new Set();
 
-        if (evaluation === 'correct') {
-          rowGreenLetters.add(letter.toUpperCase());
-        } else if (evaluation === 'present') {
-          rowYellowLetters.add(letter.toUpperCase());
-        }
-      });
+    tiles.forEach((tile) => {
+      const letter = tile.getAttribute('letter');
+      const evaluation = tile.getAttribute('evaluation');
 
-      // Second pass: apply constraints, avoiding gray conflicts
-      tiles.forEach((tile, colIndex) => {
-        const letter = tile.getAttribute('letter');
-        const evaluation = tile.getAttribute('evaluation');
+      if (evaluation === 'correct') {
+        rowGreenLetters.add(letter.toUpperCase());
+      } else if (evaluation === 'present') {
+        rowYellowLetters.add(letter.toUpperCase());
+      }
+    });
 
-        switch (evaluation) {
-          case 'correct':
-            greenConstraints[colIndex] = letter.toUpperCase();
-            break;
-          case 'present':
-            if (!yellowConstraints[letter.toUpperCase()]) {
-              yellowConstraints[letter.toUpperCase()] = [];
+    tiles.forEach((tile, colIndex) => {
+      const letter = tile.getAttribute('letter');
+      const evaluation = tile.getAttribute('evaluation');
+
+      switch (evaluation) {
+        case 'correct':
+          greenConstraints[colIndex] = letter.toUpperCase();
+          break;
+        case 'present':
+          if (!yellowConstraints[letter.toUpperCase()]) {
+            yellowConstraints[letter.toUpperCase()] = [];
+          }
+          yellowConstraints[letter.toUpperCase()].push(colIndex);
+          break;
+        case 'absent':
+          const upperLetter = letter.toUpperCase();
+          if (!rowGreenLetters.has(upperLetter) && !rowYellowLetters.has(upperLetter)) {
+            if (!grayConstraints.includes(upperLetter)) {
+              grayConstraints.push(upperLetter);
             }
-            yellowConstraints[letter.toUpperCase()].push(colIndex);
-            break;
-          case 'absent':
-            // Only add to gray if this letter is NOT green or yellow anywhere in this row
-            const upperLetter = letter.toUpperCase();
-            if (!rowGreenLetters.has(upperLetter) && !rowYellowLetters.has(upperLetter)) {
-              if (!grayConstraints.includes(upperLetter)) {
-                grayConstraints.push(upperLetter);
-              }
-            }
-            break;
-          default:
-            break;
-        }
-      });
-    }
+          }
+          break;
+      }
+    });
   });
-
-  // Debug logging
-  console.log('=== WORDLE UNLIMITED CONSTRAINT EXTRACTION DEBUG ===');
-  console.log('Green constraints:', greenConstraints);
-  console.log('Yellow constraints:', yellowConstraints);
-  console.log('Gray constraints:', grayConstraints);
-  console.log('================================================');
 
   return { green: greenConstraints, yellow: yellowConstraints, gray: grayConstraints };
 }
@@ -260,9 +149,6 @@ function startAutoplay() {
       return startAutoplayNY();
     case 'wordleunlimited':
       return startAutoplayWU();
-    default:
-      console.error('Autoplay not supported for this Wordle variant');
-      return;
   }
 }
 
@@ -285,20 +171,13 @@ function startAutoplayNY() {
         }
       });
 
-      if (evaluatedTiles === 5) {
-        completedRows++;
-      }
+      if (evaluatedTiles === 5) completedRows++;
     });
 
     if (completedRows > previousCompletedRows) {
-      console.log(`Row ${completedRows} completed! Updating constraints...`);
       previousCompletedRows = completedRows;
-
-      // Always update constraints and word count for both modes
       setTimeout(() => {
         filterAndDisplay();
-
-        // In Helper mode, also update the word count display
         if (typeof currentMode !== 'undefined' && currentMode === 'helper') {
           showWordCount();
         }
@@ -307,7 +186,6 @@ function startAutoplayNY() {
   }
 
   function setupTileObservers() {
-    // Clear existing observers
     tileObservers.forEach(obs => obs.disconnect());
     tileObservers = [];
 
@@ -315,32 +193,20 @@ function startAutoplayNY() {
 
     gameRows.forEach(row => {
       const tiles = row.querySelectorAll('[data-testid="tile"]');
-
       tiles.forEach(tile => {
-        const tileObserver = new MutationObserver(() => {
-          checkForNewCompletedRows();
-        });
-
-        tileObserver.observe(tile, {
-          attributes: true,
-          attributeFilter: ['data-state']
-        });
-
-        tileObservers.push(tileObserver);
+        const observer = new MutationObserver(() => checkForNewCompletedRows());
+        observer.observe(tile, { attributes: true, attributeFilter: ['data-state'] });
+        tileObservers.push(observer);
       });
     });
   }
 
   setupTileObservers();
-  console.log('NY Times tile observers started - now play a word!');
 }
 
 function startAutoplayWU() {
   const gameApp = document.querySelector('game-app');
-  if (!gameApp || !gameApp.shadowRoot) {
-    console.log('WordleUnlimited game not loaded yet');
-    return;
-  }
+  if (!gameApp || !gameApp.shadowRoot) return;
 
   let previousCompletedRows = 0;
   let tileObservers = [];
@@ -355,26 +221,17 @@ function startAutoplayWU() {
         let evaluatedTiles = 0;
 
         tiles.forEach(tile => {
-          if (tile.getAttribute('evaluation')) {
-            evaluatedTiles++;
-          }
+          if (tile.getAttribute('evaluation')) evaluatedTiles++;
         });
 
-        if (evaluatedTiles === 5) {
-          completedRows++;
-        }
+        if (evaluatedTiles === 5) completedRows++;
       }
     });
 
     if (completedRows > previousCompletedRows) {
-      console.log(`Row ${completedRows} completed! Updating constraints...`);
       previousCompletedRows = completedRows;
-
-      // Always update constraints and word count for both modes
       setTimeout(() => {
         filterAndDisplay();
-
-        // In Helper mode, also update the word count display
         if (typeof currentMode !== 'undefined' && currentMode === 'helper') {
           showWordCount();
         }
@@ -383,7 +240,6 @@ function startAutoplayWU() {
   }
 
   function setupTileObservers() {
-    // Clear existing observers
     tileObservers.forEach(obs => obs.disconnect());
     tileObservers = [];
 
@@ -392,18 +248,10 @@ function startAutoplayWU() {
     gameRows.forEach(row => {
       if (row.shadowRoot) {
         const tiles = row.shadowRoot.querySelectorAll('game-tile');
-
         tiles.forEach(tile => {
-          const tileObserver = new MutationObserver(() => {
-            checkForNewCompletedRows();
-          });
-
-          tileObserver.observe(tile, {
-            attributes: true,
-            attributeFilter: ['evaluation']
-          });
-
-          tileObservers.push(tileObserver);
+          const observer = new MutationObserver(() => checkForNewCompletedRows());
+          observer.observe(tile, { attributes: true, attributeFilter: ['evaluation'] });
+          tileObservers.push(observer);
         });
       }
     });
@@ -411,15 +259,6 @@ function startAutoplayWU() {
 
   setupTileObservers();
 
-  // Also watch for new rows being added (in case game structure changes)
-  const structureObserver = new MutationObserver(() => {
-    setupTileObservers(); // Re-setup observers when structure changes
-  });
-
-  structureObserver.observe(gameApp.shadowRoot, {
-    childList: true,
-    subtree: true
-  });
-
-  console.log('WordleUnlimited tile observers started - now play a word!');
+  const structureObserver = new MutationObserver(() => setupTileObservers());
+  structureObserver.observe(gameApp.shadowRoot, { childList: true, subtree: true });
 }

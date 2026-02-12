@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const themeLabel = document.getElementById('themeLabel');
   const modeLabel = document.getElementById('modeLabel');
 
-  // Get current state when popup opens
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { action: 'getState' }, function(response) {
       if (response) {
@@ -20,24 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Handle show/hide button click
   showHideBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggle' }, function(response) {
-        if (response) {
-          updateOverlayButton(response.visible);
-        }
+        if (response) updateOverlayButton(response.visible);
       });
     });
   });
 
-  // Handle autorefresh button click
   autorefreshBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleAutoplay' }, function(response) {
-        if (response) {
-          updateAutorefreshButton(response.autoplay);
-        }
+        if (response) updateAutorefreshButton(response.autoplay);
       });
     });
   });
@@ -45,9 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
   themeBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleTheme' }, function(response) {
-        if (response) {
-          updateThemeButton(response.theme);
-        }
+        if (response) updateThemeButton(response.theme);
       });
     });
   });
@@ -55,58 +46,32 @@ document.addEventListener('DOMContentLoaded', function() {
   modeBtn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleMode' }, function(response) {
-        if (response) {
-          updateModeButton(response.mode);
-        }
+        if (response) updateModeButton(response.mode);
       });
     });
   });
 
   function updateOverlayButton(visible) {
-    if (visible) {
-      overlayLabel.textContent = 'Overlay';
-      showHideBtn.textContent = 'Visible';
-      showHideBtn.classList.add('active-state');
-    } else {
-      overlayLabel.textContent = 'Overlay';
-      showHideBtn.textContent = 'Hidden';
-      showHideBtn.classList.remove('active-state');
-    }
+    overlayLabel.textContent = 'Overlay';
+    showHideBtn.textContent = visible ? 'Visible' : 'Hidden';
+    showHideBtn.classList.toggle('active-state', visible);
   }
 
   function updateAutorefreshButton(active) {
-    if (active) {
-      autorefreshLabel.textContent = 'Auto Refresh';
-      autorefreshBtn.textContent = 'On';
-      autorefreshBtn.classList.add('active-state');
-    } else {
-      autorefreshLabel.textContent = 'Auto Refresh';
-      autorefreshBtn.textContent = 'Off';
-      autorefreshBtn.classList.remove('active-state');
-    }
+    autorefreshLabel.textContent = 'Auto Refresh';
+    autorefreshBtn.textContent = active ? 'On' : 'Off';
+    autorefreshBtn.classList.toggle('active-state', active);
   }
 
   function updateThemeButton(theme) {
-    if (theme === 'dark') {
-      themeLabel.textContent = 'Color Theme';
-      themeBtn.textContent = 'Dark Theme';
-      themeBtn.classList.add('active-state');
-    } else {
-      themeLabel.textContent = 'Color Theme';
-      themeBtn.textContent = 'Light Theme';
-      themeBtn.classList.remove('active-state');
-    }
+    themeLabel.textContent = 'Color Theme';
+    themeBtn.textContent = theme === 'dark' ? 'Dark Theme' : 'Light Theme';
+    themeBtn.classList.toggle('active-state', theme === 'dark');
   }
 
   function updateModeButton(mode) {
-    if (mode === 'solver') {
-      modeLabel.textContent = 'Mode';
-      modeBtn.textContent = 'Solver Mode';
-      modeBtn.classList.add('active-state');
-    } else {
-      modeLabel.textContent = 'Mode';
-      modeBtn.textContent = 'Helper Mode';
-      modeBtn.classList.remove('active-state');
-    }
+    modeLabel.textContent = 'Mode';
+    modeBtn.textContent = mode === 'solver' ? 'Solver Mode' : 'Helper Mode';
+    modeBtn.classList.toggle('active-state', mode === 'solver');
   }
 });
